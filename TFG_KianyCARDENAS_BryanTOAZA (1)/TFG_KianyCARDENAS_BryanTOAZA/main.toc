@@ -1,0 +1,70 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\numberline {I}Introducción}{17}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Contextualización}{17}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Estado del Arte}{18}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Brecha de Investigación}{21}{subsection.1.2.1}%
+\contentsline {section}{\numberline {1.3}Planteamiento del Problema}{21}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Justificación}{22}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Objetivos}{23}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Objetivo General}{23}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Objetivos Específicos}{23}{subsection.1.5.2}%
+\contentsline {section}{\numberline {1.6}Alcance del Proyecto}{23}{section.1.6}%
+\contentsline {section}{\numberline {1.7}Fundamentación Teórica}{24}{section.1.7}%
+\contentsline {chapter}{\numberline {II}Metodología}{27}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Diagnóstico de la Situación Actual}{27}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Metodología de Desarrollo e Implementación}{28}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Técnicas e Instrumentos de Recolección de Información}{29}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Técnicas de Diagnóstico Físico}{29}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Instrumentos de Validación del Gemelo Digital}{30}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Recolección de Telemetría MQTT}{30}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Configuración e Implementación de Equipos}{30}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Configuración del ESP32 como Nodo de Borde}{30}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}Configuración del Broker Mosquitto}{31}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Configuración de Node-RED como SCADA}{31}{subsection.2.4.3}%
+\contentsline {subsection}{\numberline {2.4.4}Configuración de Webots como Simulador Ciberfísico}{32}{subsection.2.4.4}%
+\contentsline {section}{\numberline {2.5}Requerimientos del Sistema}{33}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Requerimientos Funcionales}{33}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Requerimientos No Funcionales}{33}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Diseño de la Solución}{34}{section.2.6}%
+\contentsline {subsection}{\numberline {2.6.1}Diseño de Hardware (Capa Física)}{34}{subsection.2.6.1}%
+\contentsline {subsection}{\numberline {2.6.2}Diseño de Red y Tópicos MQTT (Capa de Comunicación)}{34}{subsection.2.6.2}%
+\contentsline {subsection}{\numberline {2.6.3}Diseño Cinemático Virtual (Capa de Software)}{35}{subsection.2.6.3}%
+\contentsline {subsection}{\numberline {2.6.4}Ciclo de Vida de la Comunicación Ciberfísica}{35}{subsection.2.6.4}%
+\contentsline {subsection}{\numberline {2.6.5}Validación Geométrica del Modelo}{35}{subsection.2.6.5}%
+\contentsline {section}{\numberline {2.7}Justificación Técnica y Adaptación de Métricas}{37}{section.2.7}%
+\contentsline {subsection}{\numberline {2.7.1}Selección Tecnológica}{37}{subsection.2.7.1}%
+\contentsline {subsection}{\numberline {2.7.2}Adaptación de Métricas}{37}{subsection.2.7.2}%
+\contentsline {section}{\numberline {2.8}Presupuesto y Recursos Económicos}{38}{section.2.8}%
+\contentsline {chapter}{\numberline {III}Implementación, Pruebas y Resultados}{39}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Descripción de la Solución Implementada}{39}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Proceso de Implementación}{40}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Pruebas y Validación}{41}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Análisis de Resultados}{43}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Comparativa con la Situación Inicial}{44}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Cumplimiento de Objetivos}{45}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Análisis de Desempeño de Red MQTT}{45}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Discusión de Resultados}{46}{section.3.8}%
+\contentsline {section}{\numberline {3.9}Cronograma y Presupuesto Ejecutado}{47}{section.3.9}%
+\contentsline {chapter}{\numberline {IV}Conclusiones y Recomendaciones}{48}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Conclusiones}{48}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Validación del Objetivo General y la Hipótesis Ciberfísica}{48}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Cumplimiento de los Objetivos Específicos y Ejecución Metodológica}{49}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Aportaciones Técnicas al Campo de los Sistemas Ciberfísicos y la Manufactura}{50}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Identificación de Limitaciones y Restricciones del Prototipo Actual}{50}{subsection.4.1.4}%
+\contentsline {subsection}{\numberline {4.1.5}Reflexión Final Sobre la Transformación Digital de Activos Industriales}{51}{subsection.4.1.5}%
+\contentsline {section}{\numberline {4.2}Recomendaciones}{51}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Recomendaciones para el Laboratorio de Procesos de la Universidad Indoamérica}{52}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Recomendaciones para la Universidad Indoamérica y la Gestión Curricular}{52}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Recomendaciones Estratégicas para el Sector Agroindustrial}{53}{subsection.4.2.3}%
+\contentsline {subsection}{\numberline {4.2.4}Recomendaciones Técnicas para Iteraciones Futuras del Hardware y Software}{53}{subsection.4.2.4}%
+\contentsline {section}{\numberline {4.3}Trabajos Futuros}{54}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Evolución hacia un Gemelo Digital Prescriptivo (Nivel 4)}{54}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Nuevas Líneas de Investigación Aplicada en Ciberfísica}{54}{subsection.4.3.2}%
+\contentsline {chapter}{REFERENCIAS}{56}{section*.16}%
+\contentsline {chapter}{GLOSARIO}{59}{chapter*.18}%
+\renewcommand {\cftchappresnum }{ANEXO~}
+\contentsline {chapter}{\numberline {A}Códigos Fuente del Sistema}{63}{appendix.Alph1}%
+\contentsline {chapter}{\numberline {B}Diagramas Eléctricos y Esquemáticos}{64}{appendix.Alph2}%
+\contentsline {chapter}{\numberline {C}Modelos 3D Diseñados en FreeCAD}{65}{appendix.Alph3}%
+\contentsline {chapter}{\numberline {D}Configuración del SCADA en Node-RED}{66}{appendix.Alph4}%
+\contentsline {chapter}{\numberline {E}Resultados de las Pruebas de Validación}{67}{appendix.Alph5}%

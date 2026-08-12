@@ -1,0 +1,51 @@
+================================================================================
+REPORTE DE VERIFICACIÓN DE CITAS
+Archivo: 03_implementacion.tex
+Fecha: 2026-07-29 19:20:44
+================================================================================
+
+DOI ENCONTRADOS EN EL TEXTO:
+----------------------------------------
+1. 10.1016/j.proeng.2014.03.053
+   → Verificar en: https://doi.org/10.1016/j.proeng.2014.03.053
+
+2. 10.1016/j.cirp.2016.06.005
+   → Verificar en: https://doi.org/10.1016/j.cirp.2016.06.005
+
+3. 10.1109/COMST.2015.2444095
+   → Verificar en: https://doi.org/10.1109/COMST.2015.2444095
+
+4. 10.1109/ICAACCA50871.2020.9244470
+   → Verificar en: https://doi.org/10.1109/ICAACCA50871.2020.9244470
+
+5. 10.1109/ACCESS.2020.2998358
+   → Verificar en: https://doi.org/10.1109/ACCESS.2020.2998358
+
+6. 10.1016/j.procir.2018.03.268
+   → Verificar en: https://doi.org/10.1016/j.procir.2018.03.268
+
+7. 10.1016/j.ijpe.2007.04.018
+   → Verificar en: https://doi.org/10.1016/j.ijpe.2007.04.018
+
+8. 10.1109/ACCESS.2018.2793265
+   → Verificar en: https://doi.org/10.1109/ACCESS.2018.2793265
+
+9. 10.1016/J.ENG.2017.05.015
+   → Verificar en: https://doi.org/10.1016/J.ENG.2017.05.015
+
+10. 10.1109/ACCESS.2017.2756069
+   → Verificar en: https://doi.org/10.1109/ACCESS.2017.2756069
+
+
+================================================================================
+FRAGMENTOS DEL TEXTO CON CITAS:
+----------------------------------------
+\cite{Kritzinger2018DigitalTwin}
+\cite{Monostori2016CPS}
+\cite{Fuller2020DigitalTwin}
+\cite{Tao2017DigitalTwin}
+\cite{Muchiri2008OEE}
+\cite{AlFuqaha2015IoT}
+\cite{Zhong2017Industry}
+\cite{Caiza2020DigitalTwin}
+\cite{Qi2018DigitalTwin}

@@ -1,0 +1,465 @@
+% ===================================================================================
+\chapter{Introducción}
+\label{chap:introduccion}
+% ==========================================
+\section{Contextualización}
+% ==========================================
+La globalización de las cadenas de suministro agroindustriales ha generado una presión sin precedentes sobre los sistemas de manufactura y procesamiento de alimentos. En la última década, la Industria 4.0 ha emergido como un paradigma transformador que fusiona activos físicos con tecnologías digitales para crear sistemas ciberfísicos (CPS) \cite{monostori2016}. En este contexto, la República del Ecuador presenta un escenario dual: mientras el sector agroindustrial representa un pilar fundamental de su Producto Interno Bruto (PIB), la tasa de adopción de tecnologías habilitadoras de la Cuarta Revolución Industrial en las Pequeñas y Medianas Empresas (PYMES) y centros de investigación de la región latinoamericana aún se encuentra en una fase de maduración temprana.
+
+Según las cifras reportadas por las estadísticas oficiales de producción, la transformación de granos como el arroz y el maíz constituye uno de los mayores volúmenes de procesamiento industrial en el país. Sin embargo, múltiples estudios en ingeniería de procesos han demostrado que los métodos de dosificación electromecánica tradicional presentan mermas operativas que oscilan entre el $3\%$ y el $5\%$ debido a ineficiencias en la calibración y el control reactivo de la maquinaria. Estas pérdidas, generalmente por derrames o empaques deficientes, reflejan una necesidad urgente de modernización tecnológica que no siempre puede ser satisfecha mediante la adquisición de nuevos equipos, sino a través de la transformación digital de los activos existentes.
+
+El presente proyecto de investigación se origina en el Laboratorio de Procesos de la Universidad Indoamérica, un espacio dedicado a la validación técnica y la docencia especializada. Dentro de este laboratorio opera una máquina dosificadora de granos considerada un activo de alto valor educativo. Conceptualmente, esta máquina es una representante típica de la maquinaria \textit{legacy} industrial: opera mediante un circuito de potencia a $220\,\text{V}$, controlado por un PLC de arquitectura cerrada, el cual gobierna una secuencia de relés y electroválvulas neumáticas para ejecutar el ciclo de dosificación. A pesar de su robustez mecánica, la arquitectura cerrada impuesta por el fabricante y las políticas de mantenimiento institucionales impidieron cualquier manipulación o perforación del tablero eléctrico original, condenando a este valioso recurso a funcionar como una ``caja negra''.
+
+Ante esta limitación física, la solución propuesta trasciende el simple monitoreo para adentrarse en el ámbito de los Gemelos Digitales predictivos. Se diseñó una integración ciberfísica no invasiva, mediante un sistema de \textit{bypass} externo gobernado por microcontroladores ESP32, que permite capturar las señales críticas del proceso sin alterar el cableado interno del PLC. A través de esta arquitectura, se replica digitalmente el comportamiento completo de la máquina, habilitando un entorno de simulación y validación que respeta la integridad del sistema original, un enfoque que marca la diferencia entre una simple réplica visual y un Gemelo Digital funcional de Nivel 3.
+
+% ==========================================
+\section{Estado del Arte}
+% ==========================================
+%No lo considero necesario -K
+\subsection*{Evolución de los Gemelos Digitales y los CPS}
+En la esfera de la manufactura inteligente, el concepto de Gemelo Digital ha evolucionado desde la mera gestión del ciclo de vida del producto hasta convertirse en un habilitador crítico para la simulación predictiva. Tao et al. \cite{tao2019} establecieron una taxonomía de madurez que clasifica los gemelos en varios niveles, desde el monitoreo (Nivel 1) hasta la autonomía prescriptiva (Nivel 4). Para esta investigación, el foco se sitúa en el Nivel 3 (Predictivo/Interactivo), donde el modelo virtual no solo recibe datos en tiempo real, sino que puede interactuar con el sistema físico para anticipar fallos. Paralelamente, la arquitectura de referencia de 5 Niveles para CPS propuesta por Lee et al. \cite{lee2015} (Conexión Inteligente, Conversión, Ciber, Cognición y Configuración) provee el marco estructural para la implementación del bypass ciberfísico, permitiendo una transición fluida entre la adquisición de datos locales y el procesamiento analítico en el ciberespacio.
+
+\subsection*{Tecnologías de Control y Simulación}
+La naturaleza secuencial de las máquinas dosificadoras convierte a la teoría de control de eventos discretos en un área de estudio fundamental. Cassandras y Lafortune \cite{cassandras2021} formalizaron el uso de las Máquinas de Estados Finitos (FSM) como un modelo determinístico ideal para sistemas industriales que transitan entre estados excluyentes (neumático extendido, retraído, sellado, etc.). Su implementación en Python dentro de entornos de simulación 3D como Webots \cite{michel2004} representa un avance significativo frente a los simuladores puramente matemáticos, ya que permite modelar fenómenos físicos complejos como colisiones, cinemática y gravedad. Rasheed et al. \cite{rasheed2020} destacan que la principal barrera en el modelado predictivo suele ser la pobreza de datos, un desafío inherente a las máquinas legacy que no cuentan con sensórica inteligente nativa.
+
+\subsection*{Protocolos de Comunicación IIoT y SCADA}
+El Internet Industrial de las Cosas (IIoT) ofrece la columna vertebral comunicacional para estos sistemas. El protocolo MQTT, analizado en profundidad por Hunkeler et al. \cite{hunkeler2008} y materializado en brokers como Mosquitto \cite{light2017}, se destaca por su modelo de publicación/suscripción ligero, ideal para la telemetría bidireccional entre el ESP32 y el panel de control. A nivel de supervisión, Node-RED, fundamentado en la investigación sobre flujos de datos distribuidos de Blackstock y Lea \cite{blackstock2014}, ha desplazado en entornos académicos a los SCADA propietarios tradicionales debido a su flexibilidad y capacidad de integración visual. Autiosalo et al. \cite{autiosalo2020} complementan este enfoque proponiendo una arquitectura basada en características para estructurar los gemelos digitales, facilitando la rastreabilidad de los datos y la interoperabilidad de los componentes.
+
+\subsection*{Casos de Estudio en Maquinaria Legacy}
+Aunque la literatura documenta ampliamente aplicaciones de gemelos digitales en máquinas herramienta CNC y robots de última generación \cite{qi2018}, existe una notable escasez de aplicaciones prácticas en equipos de manufactura brownfield/legacy. La investigación de Monostori et al. \cite{monostori2016} sobre CPS en manufactura identifica precisamente esta brecha, señalando la dificultad de extraer datos significativos de infraestructuras antiguas sin tiempos de inactividad extensos o inversiones prohibitivas. Es en esta intersección donde la presente tesis realiza su principal contribución científica.
+
+A continuación, en la Tabla \ref{tab:estado_arte}, se presenta una clasificación detallada de los principales hallazgos bibliográficos que constituyen el soporte científico del proyecto.
+
+% --- INICIO DE LA TABLA CONFIGURADA PARA DIVIDIRSE EN VARIAS PÁGINAS ---
+{\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|c|p{1.5cm}|p{3.2cm}|p{2.5cm}|p{2cm}|p{3cm}|}
+\caption{Clasificación de la literatura revisada para el estado del arte.}
+\label{tab:estado_arte} \\
+\hline
+\textbf{N°} & \textbf{Autor(es) y año} & \textbf{Título abreviado} & \textbf{Tecnología principal} & \textbf{Aplicación} & \textbf{Limitación identificada} \\
+\hline
+\endfirsthead
+% Encabezado para las páginas siguientes
+\multicolumn{6}{c}%
+{{\tablename\ \thetable{} -- Continuación de la página anterior}} \\
+\hline
+\textbf{N°} & \textbf{Autor(es) y año} & \textbf{Título abreviado} & \textbf{Tecnología principal} & \textbf{Aplicación} & \textbf{Limitación identificada} \\
+\hline
+\endhead
+% Pie de tabla final (al terminar todos los datos)
+\hline
+\endlastfoot
+1 & Tao et al. (2019) & ``Digital Twin in Industry'' \cite{tao2019} & Gemelo Digital (Niveles 1-4) & Manufactura general & Marco conceptual sin validación en bypass ciberfísico. \\ \hline
+2 & Lee et al. (2015) & ``A CPS Architecture for Industry 4.0'' \cite{lee2015} & CPS 5 Niveles & Sistemas de manufactura & Arquitectura de alto nivel, sin implementación práctica en dosificadoras. \\ \hline
+3 & Monostori et al. (2016) & ``CPS in Manufacturing'' \cite{monostori2016} & CPS & Manufactura general & Enfoque macro, no aborda modernización de equipos brownfield. \\ \hline
+4 & Rasheed et al. (2020) & ``Digital Twin: Values, Challenges and Enablers'' \cite{rasheed2020} & Modelado de Gemelo Digital & Gestión de activos & Requiere alta fidelidad de datos, ausentes en máquinas sin sensórica nativa. \\ \hline
+5 & Michel (2004) & ``Webots: Professional Robot Simulation'' \cite{michel2004} & Simulación 3D (Webots) & Robótica móvil & Orientado a robótica, no a maquinaria industrial fija de eventos discretos. \\ \hline
+6 & Cassandras \& Lafortune (2021) & ``Introduction to Discrete Event Systems'' \cite{cassandras2021} & Máquina de Estados Finitos (FSM) & Control Secuencial & Alta complejidad formal para traducción directa a microcontroladores. \\ \hline
+7 & Hunkeler et al. (2008) & ``MQTT-S Protocol'' \cite{hunkeler2008} & Protocolo MQTT (IoT) & Redes de sensores & Enfoque en sensores simples, no en acoplamiento con gemelos 3D en tiempo real. \\ \hline
+8 & Blackstock \& Lea (2014) & ``Distributed Data Flow for WoT'' \cite{blackstock2014} & Node-RED / SCADA & Web of Things (WoT) & Escasez de integración directa con simuladores físicos educativos o dashboards FSM. \\ \hline
+9 & Qi \& Tao (2018) & ``Digital Twin and Big Data'' \cite{qi2018} & Gemelo Digital \& Big Data & Manufactura Inteligente & Dependencia de grandes volúmenes de datos, ausentes en máquinas legacy. \\ \hline
+10 & Autiosalo et al. (2020) & ``Feature-Based Digital Twins'' \cite{autiosalo2020} & Estructura de DT & Manufactura & No aborda despliegue en sistemas con restricciones físicas de manipulación. \\
+\end{longtable}}
+% --- FIN DE LA TABLA ---
+
+\subsection{Brecha de Investigación}
+A partir de la revisión sistemática presentada, se identifica una brecha de investigación significativa en la integración de Gemelos Digitales de Nivel 3 para maquinaria electromecánica heredada que carece de puertos de comunicación modernos. La literatura actual está dominada por trabajos que asumen conectividad nativa o capacidad de modificación total del hardware, una condición que rara vez se cumple en los laboratorios universitarios y las PYMES agroindustriales ecuatorianas. Esta tesis aborda dicha carencia mediante el diseño de un bypass ciberfísico basado en ESP32 y MQTT, validando un modelo no invasivo que emula fielmente la cinemática y la lógica de control secuencial de una dosificadora industrial, sin violar la integridad del controlador original.
+
+% ==========================================
+\section{Planteamiento del Problema}
+% ==========================================
+La máquina dosificadora de granos ubicada en el Laboratorio de Procesos de la Universidad Indoamérica representa un quebranto tecnológico para el desarrollo académico de la institución. A pesar de ser completamente funcional, su arquitectura de control presenta serias limitaciones para la investigación en Industria 4.0. El sistema opera bajo una filosofía de control de lazo cerrado y opaco: un PLC propietario enclavado a un contactor trifásico de $220\,\text{V}$ ejecuta la lógica de electroválvulas y pistones en un ciclo estrictamente secuencial. Esta configuración impedía cualquier forma de extracción de datos en tiempo real o modificación paramétrica externa.
+
+La situación problemática actual se define por tres causas raíz interrelacionadas. En primer lugar, la política de no manipulación interna del equipo (impuesta para preservar la integridad del equipo de docencia) bloqueaba la instalación de sensores de corriente en el gabinete de control. En segundo lugar, la naturaleza \textit{legacy} del equipo implica la ausencia total de buses de comunicación industrial modernos (Modbus/TCP, Profinet, EtherCAT) que permitan una telemetría directa. Finalmente, las restricciones presupuestarias del laboratorio de investigación descartaban la opción de reemplazar la unidad por un equipo de última generación.
+
+Los efectos de esta situación se traducen en tiempos de inactividad no programados por la falta de mantenimiento predictivo, la pérdida continua de trazabilidad en los lotes de dosificación procesados, y la imposibilidad técnica de desarrollar prácticas de pregrado orientadas a la transformación digital. Como consecuencia, el laboratorio opera actualmente bajo un esquema de mantenimiento exclusivamente reactivo, desaprovechando los recursos de instrumentación y control modernos.
+
+A la vista de esta problemática, surge la siguiente pregunta de investigación: \textbf{¿Cómo diseñar e implementar un gemelo digital predictivo e interactivo para una máquina dosificadora de granos, sin necesidad de modificar su estructura interna de control, mediante el uso de un bypass ciberfísico que garantice la interoperabilidad con tecnologías IIoT?}
+
+% ==========================================
+\section{Justificación}
+% ==========================================
+El desarrollo se justifica desde cuatro perspectivas estratégicas que consolidan su pertinencia técnica y académica.
+
+En el ámbito \textbf{técnico}, la solución propuesta introduce el concepto de ``bypass ciberfísico'' como una alternativa no invasiva para la modernización industrial. A diferencia de los métodos convencionales que requieren el reemplazo total del sistema de control, el diseño implementado conecta una capa de inteligencia externa (ESP32, MQTT, Node-RED) sin perforar ni modificar el cableado original del PLC. Esto constituye una contribución metodológica para la interoperabilidad de sistemas brownfield en el paradigma de la Industria 4.0, validando la sinergia entre tecnologías de hardware abierto y software libre como Webots, Python y FreeCAD.
+
+Desde el punto de vista \textbf{operativo}, la migración de la dosificadora hacia un gemelo digital predictivo busca minimizar las mermas y las interrupciones del servicio. Al habilitar la monitorización en tiempo real a través del broker MQTT Mosquitto y el panel SCADA en Node-RED, se elimina la dependencia del mantenimiento netamente reactivo. La generación de métricas de rendimiento, latencias y detección de fallos provee a los investigadores y docentes de una herramienta cuantitativa para optimizar la dosificación de granos, un hecho que incide directamente en la reducción de pérdidas por mermas estimadas entre el $3\%$ y $5\%$.
+
+La justificación \textbf{académica} radica en la capacidad de transferencia del conocimiento generado. Al ser un proyecto de código abierto, constituye un caso de estudio replicable en otros laboratorios universitarios de Iberoamérica que enfrentan el desafío de actualizar equipamiento industrial obsoleto sin grandes inversiones.
+
+Finalmente, la viabilidad \textbf{económica} es un factor crítico. La implementación se sustenta enteramente en tecnologías de bajo costo y amplia disponibilidad en el mercado local. Frente al costo de una dosificadora industrial moderna con conectividad IIoT nativa, el prototipo diseñado representa un costo marginal, ofreciendo un retorno de inversión inmediato al convertir un activo subutilizado en una plataforma de validación tecnológica de alto nivel.
+
+% ==========================================
+\section{Objetivos}
+% ==========================================
+\subsection{Objetivo General}
+Desarrollar un gemelo digital interactivo y predictivo de una máquina dosificadora de granos mediante la integración del motor de simulación Webots, una arquitectura de Máquina de Estados Finitos (FSM) y un bypass ciberfísico basado en ESP32, para emular fielmente la cinemática del ciclo industrial y habilitar la validación algorítmica de métricas de rendimiento y resiliencia ante escenarios de falla en un entorno ciberfísico seguro.
+
+\subsection{Objetivos Específicos}
+\begin{enumerate}
+  \item \textbf{Levantar y diagnosticar} la lógica secuencial y los parámetros operativos de la dosificadora electromecánica y su controlador base, definiendo la topología de la red de información, los tiempos de latencia del sistema físico y los puntos críticos de instrumentación para la integración ciberfísica.
+  \item \textbf{Diseñar e implementar} el modelo ciberfísico en Webots, programando una FSM en Python que gobierne de manera aislada la cinemática de los actuadores (alimentación, dosificación y sellado), integrando la telemetría mediante el protocolo MQTT y el panel SCADA en Node-RED, y ejecutando el bypass que respete la integridad del sistema original.
+  \item \textbf{Evaluar} la resiliencia y eficiencia de la lógica de control mediante la inyección de perturbaciones virtuales (fallos de presión y lectura), cuantificando el impacto en el rendimiento operativo, la capacidad de detección de anomalías y la efectividad general del sistema frente a escenarios de falla simulados.
+\end{enumerate}
+
+% ==========================================
+\section{Alcance del Proyecto}
+% ==========================================
+El proyecto se circunscribe al diseño, desarrollo y validación de un Sistema Ciberfísico de Nivel 3 (Gemelo Predictivo e Interactivo), enfocado exclusivamente en la réplica digital de la maquinaria y su analítica operativa.
+
+\textbf{En el alcance incluido, el proyecto abarca:}
+\begin{enumerate}
+  \item \textbf{Modelado Cinemático 3D:} Construcción del entorno físico virtual en Webots, abarcando las interacciones gravitacionales y de colisión de los componentes críticos: tolva de alimentación, sistema neumático, pistones de dosificación, trampillas de descarga y electroválvulas.
+  \item \textbf{Arquitectura Lógica de Control:} Codificación de una Máquina de Estados Finitos (FSM) en Python que reemplace el control físico para el entorno virtual, gestionando los enclavamientos de seguridad, la calibración dinámica de velocidad basada en presión neumática simulada y la sincronización con el sistema físico mediante el bypass.
+  \item \textbf{Capa de Comunicaciones y SCADA:} Implementación de un flujo de telemetría bidireccional mediante un broker MQTT (Mosquitto), acoplado a un panel de control interactivo desarrollado en Node-RED para la supervisión y comando remoto de la simulación.
+  \item \textbf{Extracción Analítica:} Programación de módulos de registro de datos para el cálculo algorítmico de métricas de rendimiento, la medición de latencias de transición de estado en milisegundos y la cuantificación de tiempos de recuperación frente a perturbaciones inyectadas.
+  \item \textbf{Bypass Ciberfísico:} Diseño e implementación del sistema externo que permita la lectura de señales del contactor trifásico y el envío de comandos al PLC original sin modificar su cableado interno, garantizando la operación dual.
+\end{enumerate}
+
+\textbf{En el alcance excluido, esta investigación no contempla:}
+\begin{itemize}
+  \item El desarrollo de modelos de Inteligencia Artificial o algoritmos heurísticos para la generación de recomendaciones autónomas (correspondientes a un Gemelo Digital Prescriptivo de Nivel 4).
+  \item La implementación de sistemas de inspección visual mediante cámaras o procesamiento de imágenes de la materia prima.
+  \item El despliegue de la arquitectura en infraestructuras de computación en la nube (\textit{Cloud Computing}) de nivel comercial, limitándose la ejecución a redes de área local o \textit{Edge Computing}.
+  \item La optimización de la máquina física original (cambios mecánicos o eléctricos en el PLC, motores o contactores).
+\end{itemize}
+
+% ==========================================
+\section{Fundamentación Teórica}
+% ==========================================
+\subsection*{Gemelo Digital y Sistemas Ciberfísicos}
+Un Gemelo Digital es una representación virtual integral de un activo físico que se actualiza de manera continua mediante flujos de datos, permitiendo simular, predecir y optimizar su comportamiento a lo largo de su ciclo de vida \cite{tao2019}. La evolución de esta tecnología se categoriza en 5 niveles de madurez: el Nivel 1 (Descriptivo) proporciona una réplica visual estática del activo; el Nivel 2 (Informativo) integra datos del mundo físico para el monitoreo unidireccional; el Nivel 3 (Predictivo/Interactivo) establece una comunicación bidireccional que permite simular y anticipar comportamientos, siendo este el alcance de la presente investigación; el Nivel 4 (Prescriptivo) añade capacidades de optimización para recomendar acciones; y el Nivel 5 (Autónomo) permite al sistema tomar y ejecutar decisiones sin intervención humana. Para lograr este objetivo, se adopta la arquitectura de Sistemas Ciberfísicos (CPS) de 5 niveles propuesta por Lee et al. \cite{lee2015}. En el contexto de esta tesis, el ``Nivel de Conexión Inteligente'' corresponde a los sensores infrarrojos, ultrasónicos y de presión acoplados al ESP32 que actúan como bypass externo. El ``Nivel de Conversión de Datos'' transforma las señales eléctricas del contactor trifásico en métricas de telemetría. El ``Nivel Ciber'' reside en el modelo Webots gobernado por Python, donde la máquina física y su gemelo coexisten y se comparan en tiempo real.
+
+\subsection*{Máquina de Estados Finitos (FSM)}
+Las FSM proporcionan el modelo matemático ideal para el control secuencial de procesos de manufactura con estados excluyentes \cite{cassandras2021}. A diferencia de un PLC convencional que opera con lógica de escalera en un hardware dedicado, la FSM del gemelo digital abstractiza el comportamiento del sistema en estados lógicos diferenciados (p. ej., \textit{Reposo}, \textit{Alimentando}, \textit{DosificandoIzq}, \textit{DosificandoDer}, \textit{Sellado}, \textit{Descarga}). Dicha implementación en el lenguaje Python, aprovechando las librerías de control de Webots, permite simular los enclavamientos lógicos originales sin riesgo de dañar el equipamiento físico, a la vez que facilita la inyección de fallos sintéticos para la validación de la resiliencia algorítmica.
+
+\subsection*{Tecnologías de Hardware}
+La capa de instrumentalización externa se sustenta en el microcontrolador ESP32-WROOM, un sistema en chip (\textit{System on a Chip}) de bajo coste que integra conectividad WiFi y Bluetooth \textit{Low Energy} (BLE). Sus 38 pines permiten gestionar un arreglo de sensores variado mediante protocolos como I2C, utilizado en los módulos adaptadores PCF8574, necesarios para la expansión de pines y el control del display TM1637. La selección de los sensores se basó en el análisis técnico de la naturaleza de la dosificadora: barreras infrarrojas para la detección de nivel en la tolva, ultrasonido para la calibración de distancias de los pistones, y un transductor de presión industrial para la línea neumática. A nivel de actuación, un banco de relés de 8 canales permite orquestar las electroválvulas y el servomotor sin intervenir en el tablero de $220\,\text{V}$.
+
+\subsection*{Tecnologías de Software y Comunicación}
+La conectividad IIoT se resuelve mediante MQTT, un protocolo de mensajería de publicación/suscripción extremadamente ligero, ideal para entornos de red con ancho de banda limitado como el WiFi del ESP32 \cite{hunkeler2008}. El uso de Mosquitto como broker central \cite{light2017} garantiza el enrutamiento eficiente de los tópicos de telemetría. A nivel de supervisión y control, se seleccionó Node-RED \cite{blackstock2014}, una herramienta de programación visual basada en flujos, por encima de otros SCADA propietarios, gracias a su compatibilidad nativa con el ecosistema MQTT y su capacidad para generar dashboards HTML interactivos y responsivos.
+
+\subsection*{Arquitectura de Integración Bypass Ciberfísico}
+El concepto de ``Bypass Ciberfísico'' es la innovación metodológica central de este proyecto, diseñada para superar la barrera de la arquitectura cerrada del PLC. Este enfoque propone la captura pasiva de señales en los puntos accesibles del contactor trifásico y la inyección lógica de comandos vía relés externos, sin modificar el cableado original. Dicha sincronización entre el mundo físico y el gemelo digital se logra estableciendo un puente MQTT que mapea cada cambio de estado lógico de la FSM con los respectivos actuadores, respetando así la integridad de la máquina heredada mientras se la dota de una capa de inteligencia predictiva.
+
+% ===================================================================================
+\chapter{Metodología}
+\label{chap:metodologia}
+
+\section{Diagnóstico de la Situación Actual}
+El punto de partida del proyecto es una máquina dosificadora de granos de arquitectura electromecánica heredada, que opera como una ``caja negra'' en el Laboratorio de Procesos de la Universidad Indoamérica. Su funcionamiento original se basa en un circuito de potencia a $220\,\text{V}$ controlado por un PLC sin interfaces de red ni telemetría. El ciclo de dosificación se inicia al recibir una señal en la entrada 1 del PLC, proveniente del contactor trifásico del motor principal. A partir de esa señal, el PLC activa relés secuenciales que gobiernan electroválvulas y pistones de dos estados, sin posibilidad de modificar su lógica interna ni su cableado, por políticas institucionales que impedían la manipulación completa de la máquina.
+
+Para caracterizar este funcionamiento se aplicaron técnicas de ingeniería inversa, empleando multímetros y trazados de continuidad para mapear las rutas de energía y la secuencia de activación de los actuadores. La observación directa estructurada permitió identificar los tiempos de ciclo, las condiciones de enclavamiento y la ausencia total de monitoreo en tiempo real, lo que confinaba el mantenimiento a un enfoque exclusivamente reactivo. Este esquema de operación contrasta con las demandas de los entornos de producción inteligente, que exigen visibilidad continua de las variables de proceso para la toma de decisiones basada en datos \cite{retrofitting2025}.
+
+Las limitaciones más críticas detectadas fueron: (1) la imposibilidad de modificar el cableado interno, (2) la falta de registro de estados discretos y (3) la nula visibilidad de las variables de proceso. Ante estas restricciones se diseñó una integración ciberfísica mediante un \textit{bypass} no intrusivo, que bifurca las rutas de energía hacia un banco de relés independientes comandado por un microcontrolador ESP32. Esta intervención garantiza la operación dual: si el nodo IoT falla, el PLC legacy mantiene su funcionalidad original, preservando la integridad del equipo. La estrategia se complementó con la instrumentación de sensores infrarrojos, un sensor ultrasónico y un transductor de presión industrial, todos aislados galvánicamente mediante optoacopladores PC817. La solución representa una modernización \textit{retrofit} en la capa de control, respetando el principio de no intromisión sobre la lógica original del PLC, en línea con las recomendaciones de la ISO 23247-1 para gemelos digitales que deben coexistir con equipamiento heredado \cite{iso23247-1}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.80\textwidth]{Capítulos/fig/mapeo_señales.png}
+\caption{Mapeo de señales originales, puntos de intervención y arquitectura de bypass.}
+\label{fig:diag_diag}
+\end{figure}
+
+\section{Metodología de Desarrollo e Implementación}
+Con el objetivo de alinear cada fase de diseño con su correspondiente validación técnica, se adoptó el modelo en V (\textit{V-Model}) adaptado a sistemas ciberfísicos. Esta metodología mitiga los riesgos de asincronía entre el modelo físico y su réplica virtual, garantizando que los requisitos sean verificados incrementalmente.
+
+Las fases de ingeniería se estructuraron de la siguiente manera:
+\begin{enumerate}
+    \item \textbf{Fase 1 – Definición Arquitectónica.} Levantamiento del diagrama de estados original y definición de las capas ciberfísicas conforme a la familia de estándares ISO 23247 para gemelos digitales en manufactura. Se identificaron los flujos de información necesarios para el gemelo digital de nivel 3 (predictivo/interactivo), según la clasificación de madurez que establece la parte 2 de dicha norma \cite{iso23247-2}.
+    \item \textbf{Fase 2 – Diseño de Subsistemas.} Modelado cinemático en Webots, programación de la máquina de estados finitos (FSM) en Python, diseño del SCADA en Node-RED y definición de los tópicos MQTT bajo el protocolo de mensajería ligera estandarizado por OASIS \cite{oasis2014mqtt}.
+    \item \textbf{Fase 3 – Implementación Física.} Construcción del panel de control con grado de protección IP54, soldadura de la instrumentación aislada con optoacopladores, despliegue del broker Mosquitto y grabación del firmware en los dos microcontroladores ESP32.
+    \item \textbf{Fase 4 – Verificación (Virtual Commissioning).} Ejecución de la FSM en Webots con inyección de perturbaciones y sincronización con los tópicos MQTT, utilizando la máscara de enrutamiento de Node-RED para aislar los comandos del hardware.
+    \item \textbf{Fase 5 – Validación del Sistema.} Extracción de logs para el cálculo de latencias de red, tiempos de recuperación y la métrica de efectividad mecánica operativa (EMO) adaptada del OEE, conforme a los lineamientos de indicadores clave de desempeño de la ISO 22400 \cite{iso22400-2}.
+\end{enumerate}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth, height=0.3\textheight, keepaspectratio=false]{Capítulos/img/V-MODEL.png}
+\caption{Metodología V-Model aplicada al desarrollo del gemelo digital.}
+\label{fig:diag_vmodel}
+\end{figure}
+
+\section{Técnicas e Instrumentos de Recolección de Información}
+\subsection{Técnicas de Diagnóstico Físico}
+La caracterización de la máquina legacy se sustentó en observación directa estructurada de los ciclos de dosificación y en el análisis de las señales eléctricas mediante un multímetro. Se realizó un mapeo completo de la secuencia electroneumática, registrando los tiempos de activación de las electroválvulas y el desplazamiento de los pistones con resolución de milisegundos. El uso de trazados de continuidad permitió identificar los puntos de bifurcación para el bypass sin alterar el cableado original, una práctica común en proyectos de retrofitting de maquinaria industrial \cite{retrofitting2025}.
+
+\subsection{Instrumentos de Validación del Gemelo Digital}
+El controlador de la FSM ejecutado en el entorno Webots genera un registro automático de transiciones de estado en archivos CSV con marcas de tiempo precisas. Durante las pruebas se almacenan, además de los cambios de estado, las latencias cinemáticas entre la orden enviada y la respuesta del actuador virtual. Estos datos constituyen la base para el cálculo posterior de la métrica EMO.
+
+\subsection{Recolección de Telemetría MQTT}
+La arquitectura de comunicación se fundamenta en una jerarquía estricta de tópicos. Los nodos ESP32 publican periódicamente las lecturas de los sensores bajo \texttt{maquina/sensor/\#} y los comandos de actuación fluyen por \texttt{maquina/actuador/\#}. Cada mensaje contiene un payload en formato JSON con los campos \texttt{timestamp}, \texttt{valor}, \texttt{unidad} y \texttt{calidad}. La frecuencia de muestreo se fijó en $100\,\text{ms}$ para asegurar un sincronismo adecuado entre la planta física y el SCADA, aprovechando las características de baja latencia del protocolo MQTT \cite{oasis2014mqtt}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth, height=0.1\textheight, keepaspectratio=false]{Capítulos/img/flujomqtt.png}
+    \caption{Flujo completo de datos, formatos de payload y frecuencias de publicación.}
+    \label{fig:diag_flujo_info}
+\end{figure}
+
+\section{Configuración e Implementación de Equipos}
+\subsection{Configuración del ESP32 como Nodo de Borde}
+Los dos microcontroladores ESP32-DevKit v1 (38 pines) fueron configurados con las siguientes asignaciones de pines:
+\begin{itemize}
+    \item Sensores infrarrojos (entrada digital con optoacoplador PC817) en GPIO 14, 15, 16.
+    \item Sensor ultrasónico HC-SR04: Trig en GPIO 17, Echo en GPIO 18.
+    \item Transductor de presión industrial $4$–$20\,\text{mA}$, leído a través de un conversor analógico-digital con filtro de promedio móvil de 10 muestras.
+    \item Display TM1637 (I2C) y expansores de puertos PCF8574 para la interfaz HMI física.
+    \item Cliente MQTT implementado con la librería \texttt{PubSubClient}; conexión WiFi con QoS 1 para los tópicos de estado y comandos.
+\end{itemize}
+Se implementaron filtros digitales de promedio móvil para suavizar las lecturas analógicas de presión y eliminar el ruido de alta frecuencia inducido por el contactor trifásico. La plataforma ESP32 fue seleccionada por su conectividad WiFi integrada, su arquitectura de doble núcleo que permite ejecutar simultáneamente la pila de comunicación MQTT y la lógica de control, y un costo reducido que la convierte en una opción idónea para nodos de borde en entornos IIoT \cite{espressif2023}.
+
+\subsection{Configuración del Broker Mosquitto}
+El broker MQTT se desplegó sobre un sistema operativo Linux en una máquina virtual dedicada. Se habilitaron los puertos 1883 (MQTT) y 9001 (WebSockets), y se aplicó autenticación básica (usuario/contraseña) para restringir accesos no autorizados. Se activó la persistencia de mensajes y la retención de estados (\textit{retained messages}) para que los suscriptores nuevos reciban de inmediato el último valor conocido de cada sensor, garantizando la consistencia del estado incluso después de desconexiones temporales.
+
+\subsection{Configuración de Node-RED como SCADA}
+Se instalaron los nodos adicionales para MQTT (entrada/salida), \texttt{Dashboard}, \texttt{JSON parser} y \texttt{SQLite}. Los flujos principales son:
+\begin{itemize}
+    \item Suscripción a los tópicos \texttt{maquina/sensor/\#} para visualización en tiempo real.
+    \item Enrutamiento condicional: cuando el selector físico está en modo \textit{Simulación}, los comandos de actuador se publican bajo el prefijo \texttt{maquina/simulacion/actuador/\#}, que es leído exclusivamente por el controlador de Webots, aislándolo del hardware.
+    \item Almacenamiento de los datos históricos en una base SQLite para el análisis post-prueba.
+\end{itemize}
+La elección de Node-RED responde a su modelo de programación visual, su conectividad nativa con MQTT y la capacidad de generar dashboards web de manera ágil, cualidades que han sido validadas en numerosos casos de uso de la Internet de las Cosas.
+
+\subsection{Configuración de Webots como Simulador Ciberfísico}
+Los modelos 3D generados en FreeCAD se importaron en formatos STL y OBJ. Los pistones se modelaron mediante nodos \texttt{SliderJoint} con dos posiciones discretas, y las trampillas con nodos \texttt{HingeJoint}. El controlador Supervisor, escrito en Python, ejecuta la FSM y utiliza el cliente Paho-MQTT para suscribirse y publicar en los tópicos correspondientes. La sincronización se logra a través de un lazo de control que, cada $100\,\text{ms}$, envía el estado actual del gemelo a \texttt{maquina/estado/fsm}.
+
+Webots fue seleccionado por superar a otros simuladores en los criterios de integración con Python, bajo consumo de CPU y capacidad para modelar restricciones mecánicas discretas sin necesidad de motores físicos complejos \cite{michel2004webots}. La simulación no exige recursos de GPU elevados, lo que permite ejecutarla en el mismo equipo que aloja el SCADA y el broker MQTT durante las pruebas de laboratorio.
+
+\begin{figure}[htbp]
+\centering
+    \includegraphics[width=1\textwidth]{Capítulos/img/DIAGRAMA ESQUEMATICODELPANELSCADA.png}
+\caption{Esquemático del panel de control IP54.}
+\label{fig:esq_panel}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+    \includegraphics[width=1\textwidth]{Capítulos/img/DIAGRAMARELES.png}
+\caption{Conexión de relés.}
+\label{fig:conex_relays}
+\end{figure}
+
+\section{Requerimientos del Sistema}
+\subsection{Requerimientos Funcionales}
+\begin{enumerate}
+    \item \textbf{RF1 – Control Híbrido y Bypass.} El panel físico instrumentado debe permitir la alternancia entre modo Manual (control unitario) y modo Automático, aislando estas rutinas de la lógica original del PLC mediante el banco de relés independientes.
+    \item \textbf{RF2 – Enclavamiento de Seguridad (Interlocks).} El algoritmo de la FSM debe impedir la activación manual de cualquier actuador mientras el ciclo automático esté en ejecución.
+    \item \textbf{RF3 – Fidelidad Cinemática en 3D.} El gemelo digital, desarrollado en Webots, debe emular los pistones neumáticos respetando exactamente sus dos posiciones discretas y las restricciones mecánicas de la máquina real.
+    \item \textbf{RF4 – Secuestro de Señales (Aislamiento Virtual).} Node-RED debe interceptar las órdenes de control e inyectar el prefijo de simulación (p. ej., \texttt{maquina/simulacion/actuador/piston}) cuando el selector de modo esté en Simulación, comandando únicamente al gemelo sin accionar el hardware físico.
+    \item \textbf{RF5 – Telemetría en Tiempo Real.} El ESP32 debe publicar lecturas de los sensores cada $100\,\text{ms}$ en los tópicos MQTT, indicando marca temporal y calidad del dato.
+    \item \textbf{RF6 – Datalogging Automatizado.} El controlador de Webots y el flujo de Node-RED deben registrar transiciones de estado y eventos con timestamp, generando archivos CSV para el análisis posterior.
+\end{enumerate}
+
+\subsection{Requerimientos No Funcionales}
+\begin{enumerate}
+    \item \textbf{RNF1 – Latencia de Red.} El intercambio de mensajes a través del broker Mosquitto debe operar con una latencia inferior a $100\,\text{ms}$ para mantener el sincronismo del SCADA.
+    \item \textbf{RNF2 – Inmunidad al Ruido Eléctrico.} Todas las entradas digitales de los sensores deben estar aisladas galvánicamente mediante optoacopladores PC817, evitando reinicios del ESP32 por inducciones electromagnéticas del contactor trifásico.
+    \item \textbf{RNF3 – Eficiencia Computacional.} El script de simulación en Webots debe ejecutarse de manera eficiente, sin saturar el procesador del equipo donde corre la simulación, permitiendo la operación en paralelo de otras tareas del sistema.
+    \item \textbf{RNF4 – Disponibilidad del Broker.} Durante las pruebas de validación, el broker Mosquitto debe presentar una tasa de disponibilidad superior al $99.9\%$.
+    \item \textbf{RNF5 – Escalabilidad.} La arquitectura de tópicos MQTT debe permitir la adición de nuevos sensores o actuadores sin alterar la estructura base de nombres, facilitando futuras ampliaciones del gemelo digital.
+\end{enumerate}
+
+\section{Diseño de la Solución}
+\label{sec:diseno_solucion}
+\subsection{Diseño de Hardware (Capa Física)}
+La etapa de entrada se protegió con optoacopladores PC817 que convierten las señales industriales de $12/24\,\text{V}$ al nivel lógico de $3.3\,\text{V}$ del ESP32, creando una barrera galvánica indispensable para la inmunidad al ruido. La alimentación de la caja de control se organizó en cascada: una fuente switching de $12\,\text{V}/10\,\text{A}$ y un módulo reductor Buck XL4015 a $5\,\text{V}$ para los periféricos. El panel de control, alojado en una envolvente IP54, integra pulsadores mecánicos, un selector de tres posiciones, parada de emergencia y el display TM1637. El sensor de presión industrial con interfaz $4$–$20\,\text{mA}$ se conectó a través de un filtro de promedio móvil implementado en firmware. Las salidas hacia actuadores se realizan mediante un módulo de relés de 8 canales, que replica las trayectorias de potencia del PLC original.
+
+\subsection{Diseño de Red y Tópicos MQTT (Capa de Comunicación)}
+Se definió una jerarquía estricta de tópicos MQTT:
+\begin{itemize}
+    \item \texttt{maquina/sensor/presion}
+    \item \texttt{maquina/sensor/nivel\_tolva}
+    \item \texttt{maquina/sensor/distancia}
+    \item \texttt{maquina/actuador/electrovalvula}
+    \item \texttt{maquina/actuador/piston}
+    \item \texttt{maquina/simulacion/actuador/\#}
+    \item \texttt{maquina/estado/fsm}
+\end{itemize}
+Los payloads se estructuran en JSON con los campos \texttt{timestamp} (ISO 8601), \texttt{valor} (numérico), \texttt{unidad} y \texttt{calidad} (0--100). Esta uniformidad facilita el procesamiento tanto en el SCADA como en el simulador.
+
+\subsection{Diseño Cinemático Virtual (Capa de Software)}
+El gemelo digital reproduce la volumetría real de la dosificadora a partir de modelos CAD exportados desde FreeCAD. En Webots se emplearon nodos \texttt{SliderJoint} para los pistones, con restricciones de posición que les permiten alcanzar solo dos estados (retraído/extendido), y nodos \texttt{HingeJoint} para las trampillas de dosificación. El controlador Supervisor, escrito en Python, ejecuta una FSM que refleja los estados del proceso y recibe comandos a través de MQTT.
+
+\subsection{Ciclo de Vida de la Comunicación Ciberfísica}
+El flujo de información inicia con la publicación periódica de telemetría desde el ESP32 al broker Mosquitto. Node-RED recibe, enriquece y enruta los datos hacia el dashboard SCADA y hacia el controlador de Webots. Los comandos generados por el operador o por la FSM viajan en sentido inverso: Node-RED decide, según el modo de operación, si se envían al hardware real o únicamente al gemelo bajo el prefijo de simulación. Finalmente, el estado del sistema se registra tanto en la base de datos SQLite como en los archivos CSV del Supervisor.
+
+\begin{figure}[htbp]
+\centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/ciclodevidacomunicacion.png}
+\caption{Ciclo completo de la información desde el sensor hasta el registro histórico.}
+\label{fig:ciclo_info}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/arquitectura_sistema.jpeg}
+\caption{Arquitectura global del gemelo digital implementado.}
+\label{fig:arq_general}
+\end{minipage}
+\end{figure}
+
+\subsection{Validación Geométrica del Modelo}
+Para garantizar que el gemelo digital mantuviera una correspondencia volumétrica exacta, se compararon las dimensiones reales de la máquina con las del modelo importado en Webots. La Tabla~\ref{tab:comp_geom} muestra la coincidencia en distancias y posiciones de los actuadores, con una desviación máxima de $2\,\text{mm}$. Esta precisión es suficiente para que las restricciones cinemáticas y las colisiones se reproduzcan fielmente.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparación de dimensiones y posiciones geométricas.}
+\label{tab:comp_geom}
+\begin{tabular}{lcc}
+\hline
+\textbf{Parámetro} & \textbf{Valor real (mm)} & \textbf{Valor en Webots (mm)} \\
+\hline
+Carrera del pistón A & 80 & 80 \\
+Carrera del pistón B & 120 & 120 \\
+Diámetro de válvula & 35 & 35 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Justificación Técnica y Adaptación de Métricas}
+\subsection{Selección Tecnológica}
+La elección del ESP32 frente a otras plataformas (Arduino, Raspberry Pi) se fundamenta en su conectividad WiFi integrada, su arquitectura dual-core (que permite manejar la comunicación MQTT y la lógica de control en paralelo) y su bajo costo, convirtiéndolo en la opción idónea para el nodo de borde del sistema ciberfísico \cite{espressif2023}. MQTT fue seleccionado sobre HTTP por su menor sobrecarga de cabeceras, su modelo de publicación/suscripción asíncrono y su amplia adopción en entornos IIoT, tal como lo respalda el estándar OASIS \cite{oasis2014mqtt}. Webots se impuso a otros simuladores (Nvidia Isaac Sim, Gazebo, Unity) por su integración nativa con Python, su bajo consumo de CPU y su capacidad para modelar restricciones mecánicas discretas sin necesidad de motores físicos complejos, características que lo consolidan como un entorno de simulación profesional para robótica y automatización \cite{michel2004webots}. Por último, Node-RED se prefirió a un SCADA tradicional por su entorno de programación visual, su conectividad MQTT nativa y la posibilidad de desplegar dashboards web de manera ágil, funcionalidades que han sido validadas en aplicaciones de IoT industrial.
+
+\subsection{Adaptación de Métricas}
+La métrica de referencia en la industria es la OEE, definida como el producto de la disponibilidad, el rendimiento y la calidad según la norma ISO 22400-2 \cite{iso22400-2}. La literatura especializada señala que la OEE es una herramienta clave para medir el desempeño de los equipos de manufactura \cite{muchiri2008oee}. Dado que en este proyecto no se dispone de celdas de carga ni de sistemas de visión artificial para medir la calidad del producto dosificado, se adaptó la OEE eliminando el factor de calidad, obteniendo así la EMO:
+\begin{equation}
+    \text{EMO} (\%) = \text{Disponibilidad} \times \text{Rendimiento} \times 100.
+\end{equation}
+Además, se calculó el MTTR ante fallos inyectados durante la fase de verificación:
+\begin{equation}
+    \text{MTTR} = \frac{\sum_{i=1}^{N} \text{tiempo de inactividad}_i}{N},
+\end{equation}
+donde \(N\) es el número de eventos de fallo inducidos.
+
+Los filtros de promedio móvil aplicados a la señal de presión siguen la ecuación:
+\begin{equation}
+    \overline{p}_k = \frac{1}{M} \sum_{i=0}^{M-1} p_{k-i},
+\end{equation}
+con \(M=10\) muestras, suficiente para atenuar el ruido de conmutación del contactor sin introducir un retardo excesivo.
+
+\section{Presupuesto y Recursos Económicos}
+La inversión total necesaria para la implementación del bypass, la instrumentación y los nodos de comunicación se desglosa en la Tabla~\ref{tab:presupuesto}. Los precios corresponden a valores de mercado locales, y se incluye una partida para herramientas de laboratorio considerando una depreciación del $50\%$ de su vida útil.
+
+\begin{longtable}{|p{6.5cm}|c|p{2cm}|c|}
+\caption{Presupuesto detallado del proyecto.}
+\label{tab:presupuesto}\\
+\hline
+\textbf{Componente/Herramienta} & \textbf{Cantidad} & \textbf{Precio Unitario (USD)} & \textbf{Subtotal (USD)} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Componente/Herramienta} & \textbf{Cantidad} & \textbf{Precio Unitario (USD)} & \textbf{Subtotal (USD)} \\
+\hline
+\endhead
+\hline
+\endlastfoot
+ESP32 DevKit v1 (38 pines) & 2 & 6.50 & 13.00 \\
+Optoacopladores PC817 & 10 & 0.30 & 3.00 \\
+Sensor de presión industrial $4$–$20\,\text{mA}$ & 1 & 65.00 & 65.00 \\
+Válvula reguladora de presión & 1 & 45.00 & 45.00 \\
+Módulo relé 8 canales $5\,\text{V}/10\,\text{A}$ & 1 & 8.50 & 8.50 \\
+Fuente switching $12\,\text{V}/10\,\text{A}$ & 1 & 22.00 & 22.00 \\
+Módulo Buck XL4015 & 1 & 3.50 & 3.50 \\
+Display TM1637 & 1 & 2.80 & 2.80 \\
+Caja electrónica IP54 & 1 & 18.00 & 18.00 \\
+Selector 3 posiciones & 1 & 4.00 & 4.00 \\
+Botones pulsadores industriales & 12 & 1.20 & 14.40 \\
+Cables jumper, AWG, conectores & Global & 15.00 & 15.00 \\
+Kit de soldadura y herramientas & Global & 30.00 & 30.00 \\
+\hline
+\textbf{TOTAL} & & & \textbf{243.20} \\
+\hline
+\end{longtable}
+
+% ===================================================================================
+\chapter{Implementación, Pruebas y Resultados}
+\label{chap:implementacion}
+
+\section{Descripción de la Solución Implementada}
+La arquitectura final del sistema implementado en el Laboratorio de Procesos de la Universidad Indoamérica constituye la materialización de un CPS de nivel 3, aplicado sobre una máquina dosificadora de granos de tipo heredado. La solución se orquestó bajo el principio de no intrusión, respetando la integridad de la máquina original mediante un \textit{bypass} ciberfísico paralelo. La columna vertebral de dicha arquitectura es una caja de control industrial externa (grado de protección IP54), que alberga la lógica de adquisición de datos, actuación y comunicación IoT \cite{Kritzinger2018DigitalTwin}.
+
+El núcleo de procesamiento se dividió en dos microcontroladores ESP32-WROOM de 38 pines, seleccionados por su capacidad Wi-Fi y Bluetooth integrada que facilita la conectividad bidireccional sin modificar el cableado de la planta original. Sobre esta base, se integró un sistema de sensórica compuesto por tres barreras infrarrojas para la detección de producto (fundas), un sensor ultrasónico para la verificación de tolva y un transductor de presión industrial con acondicionamiento de señal, encargado de monitorizar el circuito neumático que acciona los pistones de dosificación. Como capa de actuación, se dispuso de un módulo de relés de 8 canales para gobernar las electroválvulas y un servomotor para el dispensador auxiliar, replicando y controlando las órdenes que originalmente ejecutaba el PLC.
+
+La implementación del \textit{bypass} representó el desafío ingenieril más crítico. Dado que el controlador original (PLC) gestionaba las entradas de un contactor trifásico de $220\,\text{V}$, fue necesario diseñar una etapa de aislamiento galvánico utilizando optoacopladores PC817. Esto permitió bifurcar las señales de control del relé sin que la corriente de retorno afectara las nuevas entradas digitales de los ESP32, garantizando una operación dual ininterrumpida: la máquina podía operar en modo \textit{legacy} (autónomo) o en modo \textit{gemelo digital}, conmutando la intervención mediante el SCADA \cite{Monostori2016CPS}. La comunicación entre el hardware físico, el gemelo digital 3D en Webots y el panel SCADA en Node-RED se unificó mediante el protocolo MQTT, utilizando Mosquitto como broker local, lo que aseguró una latencia de mensajería en el orden de los microsegundos.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/arquitectura_sistema.png}
+    \caption{Arquitectura general del sistema implementado: integración hardware-software-gemelo digital.}
+    \label{fig:arquitectura_sistema}
+\end{figure}
+\elaboradopor{El Autor}
+\fuente{Elaboración propia}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Capítulos/img/maquina_real.jpeg}
+        \caption{Máquina dosificadora de granos real (vista frontal).}
+        \label{fig:maquina_real}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Capítulos/img/gemelo_webots.jpeg}
+        \caption{Gemelo digital en Webots con restricciones cinemáticas equivalentes.}
+        \label{fig:gemelo_webots}
+    \end{minipage}
+\end{figure}
+\elaboradopor{El Autor}
+\fuente{Capturas del entorno de laboratorio y simulador Webots}
+
+\section{Proceso de Implementación}
+El desarrollo del proyecto se estructuró en siete fases iterativas, desde la construcción física del gabinete hasta la validación virtual de los KPI de manufactura. La \textbf{Fase 1} consistió en el diseño y cableado del panel de control IP54. Debido a la presencia de interferencias electromagnéticas (EMI) por la conmutación de la carga inductiva de $220\,\text{V}$, se integraron condensadores de poliéster como filtros \textit{snubber}, lo que resultó fundamental para evitar reinicios espontáneos de los microcontroladores. La \textbf{Fase 2} abordó la programación del firmware en los ESP32; se implementaron filtros EMA para estabilizar la señal analógica del transductor de presión, fijando una frecuencia de muestreo de $100\,\text{ms}$ que balancea la capacidad de respuesta con la estabilidad de la red.
+
+La \textbf{Fase 3} y \textbf{4} se enfocaron en el ecosistema digital. Se configuró el broker Mosquitto definiendo una estricta máscara de enrutamiento de tópicos para el \textit{Virtual Commissioning} (p. ej., \texttt{planta/dosificadora/presion}) con payloads en formato JSON. Simultáneamente, se desarrolló el dashboard SCADA en Node-RED, donde se desplegaron indicadores visuales de OEE y controles para la operación remota. La \textbf{Fase 5} y \textbf{6} materializaron el gemelo digital. El modelo cinemático de la máquina se diseñó en FreeCAD, respetando las proporciones y restricciones de movimiento, y se exportó a Webots \cite{Fuller2020DigitalTwin}. En este entorno, se programó una Máquina de Estados Finitos (FSM) en Python que replica exactamente la secuencia lógica del PLC, permitiendo la sincronización bidireccional con el hardware físico a través de MQTT. La \textbf{Fase 7} consistió en la integración total y las pruebas de validación con lotes de producto.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/panel_scada_node-red.jpeg}
+    \caption{Panel SCADA desarrollado en Node-RED con indicadores de OEE, disponibilidad, rendimiento y controles remotos.}
+    \label{fig:panel_scada}
+\end{figure}
+\elaboradopor{El Autor}
+\fuente{Captura del entorno Node-RED}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/diagrama_flujo_mqtt.jpeg}
+    \caption{Diagrama de flujo de comunicación MQTT entre ESP32, broker Mosquitto, Node-RED y Webots.}
+    \label{fig:flujo_mqtt}
+\end{figure}
+\elaboradopor{El Autor}
+\fuente{Elaboración propia}
+
+\section{Pruebas y Validación}
+Para la evaluación del gemelo digital de Nivel 3, se diseñó un protocolo de validación experimental con cinco corridas de producción, variando el tamaño del lote desde 60 hasta 200 fundas. El objetivo fue verificar la eficacia del sistema en términos de Disponibilidad, Rendimiento y OEE, así como su estabilidad comunicacional mediante el monitoreo de la latencia MQTT y su capacidad predictiva frente a anomalías. Se registró que la \textbf{Prueba 1}, con un lote de 200 fundas, requirió un tiempo operativo de $28.27$ minutos, alcanzando una OEE del $92.33\%$ sin registrar interrupciones. Las pruebas 2, 3 y 4 confirmaron la consistencia del sistema, manteniendo la OEE entre el $91.30\%$ y el $92.04\%$, con una disponibilidad perfecta del $100\%$.
+
+La validación del comportamiento predictivo se llevó a cabo en la \textbf{Prueba 5}, donde se inyectó un fallo neumático simulado mediante la alteración de los valores del transductor de presión. Este evento provocó una caída en la disponibilidad del $7.08\%$, pasando del $100\%$ al $92.92\%$, y una reducción de la OEE global del $7.23\%$, situándose en $84.62\%$. La respuesta del sistema ante este estímulo permitió registrar un MTTR de aproximadamente 52 segundos, demostrando la capacidad del gemelo para detectar rápidamente la desviación y asistir en la corrección del régimen operativo, un contraste significativo con la operación reactiva tradicional \cite{Tao2017DigitalTwin}. La tabla \ref{tab:resultados_pruebas} presenta la matriz de resultados cuantitativos obtenidos durante las pruebas.
+
+{\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|c|c|c|c|c|c|c|}
+\caption{Resultados de las pruebas de validación del gemelo digital.}
+\label{tab:resultados_pruebas} \\
+\hline
+\textbf{Prueba} & \shortstack{\textbf{Lote} \\ \textbf{(fundas)}} & \shortstack{\textbf{Tiempo} \\ \textbf{(min)}} & \textbf{OEE (\%)} & \shortstack{\textbf{Disponibilidad} \\ \textbf{(\%)}} & \shortstack{\textbf{Rendimiento} \\ \textbf{(\%)}} & \shortstack{\textbf{Latencia} \\ \textbf{(ms)}} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Prueba} & \shortstack{\textbf{Lote} \\ \textbf{(fundas)}} & \shortstack{\textbf{Tiempo} \\ \textbf{(min)}} & \textbf{OEE (\%)} & \shortstack{\textbf{Disponibilidad} \\ \textbf{(\%)}} & \shortstack{\textbf{Rendimiento} \\ \textbf{(\%)}} & \shortstack{\textbf{Latencia} \\ \textbf{(ms)}} \\
+\hline
+\endhead
+1 & 200 & 28.27 & $92.33$ & $100.0$ & $92.33$ & $0.75$ \\
+2 & 120 & 16.96 & $92.04$ & $100.0$ & $92.04$ & $0.45$ \\
+3 &  60 &  8.48 & $91.30$ & $100.0$ & $91.30$ & $0.50$ \\
+4 &  78 & 11.02 & $91.71$ & $100.0$ & $91.71$ & $0.74$ \\
+5 &  80 & 11.38 & $84.62$ & $92.92$ & $91.07$ & $0.51$ \\
+\hline
+\end{longtable}}
+\elaboradopor{El Autor}
+\fuente{Datos de pruebas experimentales}
+
+\begin{figure

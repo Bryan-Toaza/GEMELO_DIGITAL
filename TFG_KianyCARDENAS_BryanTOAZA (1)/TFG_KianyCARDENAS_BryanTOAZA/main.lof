@@ -1,0 +1,25 @@
+\babel@toc {spanish}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1}{\ignorespaces Mapeo de señales originales, puntos de intervención y arquitectura de bypass.}}{28}{figure.caption.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Metodología V-Model aplicada al desarrollo del gemelo digital.}}{29}{figure.caption.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Flujo completo de datos, formatos de payload y frecuencias de publicación.}}{30}{figure.caption.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Esquemático del panel de control IP54.}}{32}{figure.caption.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Conexión de relés.}}{32}{figure.caption.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Ciclo completo de la información desde el sensor hasta el registro histórico.}}{36}{figure.caption.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Arquitectura global del gemelo digital implementado.}}{36}{figure.caption.7}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {8}{\ignorespaces Arquitectura general del sistema implementado: integración hardware-software-gemelo digital.}}{40}{figure.caption.9}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Máquina dosificadora de granos real (vista frontal).}}{41}{figure.caption.10}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Gemelo digital en Webots con restricciones cinemáticas equivalentes.}}{41}{figure.caption.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Panel SCADA desarrollado en Node-RED con indicadores de OEE, disponibilidad, rendimiento y controles remotos.}}{42}{figure.caption.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Diagrama de flujo de comunicación MQTT entre ESP32, broker Mosquitto, Node-RED y Webots.}}{42}{figure.caption.12}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Reporte de la Prueba 1 (200 fundas, OEE 92.33\%).}}{43}{figure.caption.13}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Reporte de la Prueba 5 (fallo inyectado, OEE 84.62\%).}}{43}{figure.caption.13}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Diagrama de Gantt del proyecto (12 semanas).}}{47}{figure.caption.15}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

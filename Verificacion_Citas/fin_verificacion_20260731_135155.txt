@@ -1,0 +1,35 @@
+================================================================================
+REPORTE DE VERIFICACIÓN DE CITAS
+Archivo: fin.tex
+Fecha: 2026-07-31 13:51:55
+================================================================================
+
+DOI ENCONTRADOS EN EL TEXTO:
+----------------------------------------
+❌ No se encontraron DOIs en el texto.
+   ADVERTENCIA: Esto puede indicar que el modelo alucinó citas.
+
+
+================================================================================
+FRAGMENTOS DEL TEXTO CON CITAS:
+----------------------------------------
+\cite{monostori2016}
+\cite{tao2019}
+\cite{lee2015}
+\cite{cassandras2021}
+\cite{michel2004}
+\cite{rasheed2020}
+\cite{hunkeler2008}
+\cite{light2017}
+\cite{blackstock2014}
+\cite{autiosalo2020}
+\cite{qi2018}
+\cite{monostori2016}
+\cite{tao2019}
+\cite{lee2015}
+\cite{monostori2016}
+\cite{rasheed2020}
+\cite{michel2004}
+\cite{cassandras2021}
+\cite{hunkeler2008}
+\cite{blackstock2014}

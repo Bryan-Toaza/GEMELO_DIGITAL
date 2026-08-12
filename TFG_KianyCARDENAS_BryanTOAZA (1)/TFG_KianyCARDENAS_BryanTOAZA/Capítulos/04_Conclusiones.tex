@@ -1,0 +1,134 @@
+\chapter{Conclusiones y Recomendaciones}
+\label{chap:conclusiones}
+
+\section{Conclusiones}
+
+\subsection{Validación del Objetivo General y la Hipótesis Ciberfísica}
+
+En el contexto de la presente investigación, hemos logrado demostrar empíricamente la viabilidad técnica y la validez funcional de implementar un Gemelo Digital de Nivel 3 con capacidades predictivas e interactivas sobre una máquina dosificadora de granos de naturaleza \textit{legacy}. Nuestra hipótesis fundamental del proyecto sostenía que era posible modernizar un equipo industrial obsoleto sin alterar su arquitectura electromecánica original mediante un \textit{bypass} ciberfísico no intrusivo. Los resultados cuantitativos que obtuvimos durante las jornadas de validación experimental en el Laboratorio de Procesos confirman esta premisa. Mediante la integración efectiva que realizamos de los tres pilares del sistema el \textit{hardware} de instrumentación externa basado en controladores ESP32, el \textit{middleware} de comunicación soportado por el protocolo MQTT y el broker Mosquitto, y el entorno de simulación 3D en Webots logramos constituir un sistema ciberfísico cohesivo.
+
+La evidencia más contundente del cumplimiento de nuestro objetivo general reside en que conseguimos una Efectividad General de los Equipos (OEE) promedio del 91.85\% con una desviación estándar de apenas $\pm 0.46\%$ durante los ciclos operativos normales. Con esta métrica, complementada por una Disponibilidad del 100\% y un Rendimiento equivalente fuera de los escenarios de fallo, demostramos que el gemelo digital no solo funciona como un espejo pasivo del proceso físico, sino que mantiene la estabilidad y eficiencia del sistema. Validamos de manera crítica la capacidad predictiva, característica distintiva del Nivel 3 en la pirámide de los gemelos digitales, en la Prueba 5. En dicho escenario, inyectamos un fallo en el sistema neumático que el modelo virtual detectó y reflejó, lo cual nos permitió una reacción asistida como operadores que resultó en un Tiempo Medio de Reparación (MTTR) de 52 segundos y una disponibilidad durante el evento de fallo del 92.92\%. Con estos valores confirmamos que el gemelo digital trasciende la mera monitorización para convertirse en una herramienta de apoyo a la decisión en tiempo real.
+
+\subsection{Cumplimiento de los Objetivos Específicos y Ejecución Metodológica}
+
+Guiamos el desarrollo del proyecto mediante un marco metodológico estructurado que desglosamos en tres objetivos específicos; alcanzamos cada uno de ellos a cabalidad y contribuimos de manera sinérgica al éxito de nuestro prototipo final.
+
+En primer lugar, cumplimos el objetivo específico OE1 (Levantamiento y diagnóstico) mediante un proceso exhaustivo de ingeniería inversa que llevamos a cabo. Ante la falta de documentación técnica actualizada del equipo \textit{legacy}, realizamos un mapeo detallado del circuito eléctrico a 220V y de la lógica de control original gobernada por un PLC. Este diagnóstico nos permitió identificar el punto exacto de intervención en la entrada 1 del PLC, proveniente del contactor trifásico, lo cual fue fundamental para que diseñáramos el \textit{bypass} sin desencadenar conflictos lógicos ni riesgos eléctricos. La instalación de la sensórica (infrarrojos, ultrasónico y transductor de presión) que efectuamos respondió directamente a nuestra necesidad de caracterizar el comportamiento neumático y mecánico previamente oculto.
+
+En segundo lugar, concretamos el objetivo OE2 (Diseño e implementación) con la materialización completa de la arquitectura que propusimos. Diseñamos el \textit{hardware} de la caja de control externa, resolviendo las limitaciones de pines de los ESP32 mediante módulos de expansión I2C y mitigando las interferencias electromagnéticas con un condensador de poliéster dimensionado para la carga inductiva de los contactores. Paralelamente, desarrollamos la arquitectura de \textit{software}, implementando la Máquina de Estados Finitos (FSM) en Python dentro de Webots y programando los nodos de comunicación y el SCADA en Node-RED. Al hacer converger ambos desarrollos, logramos una latencia de comunicación MQTT promedio de 0.61 ms, un valor excepcionalmente por debajo del umbral de 100 ms que establecimos en los requerimientos no funcionales, garantizando así una sincronía efectiva entre el mundo físico y el virtual.
+
+Finalmente, acometimos el objetivo OE3 (Evaluación) mediante un riguroso plan de pruebas en el que procesamos lotes de producción desde 60 hasta 200 fundas. En esta fase no nos limitamos a verificar la funcionalidad, sino que generamos un conjunto de datos cuantitativos robustos. Con la repetibilidad de la métrica OEE en las cuatro pruebas sin fallo, con una variación mínima, validamos la consistencia de nuestra instrumentación y la robustez del algoritmo de control. Al ejecutar completamente el proyecto dentro de un presupuesto de \$243.20 USD, validamos que alcanzamos los objetivos técnicos bajo estrictas restricciones económicas, maximizando la relación costo-beneficio.
+
+\subsection{Aportaciones Técnicas al Campo de los Sistemas Ciberfísicos y la Manufactura}
+
+Más allá de la solución puntual, con este trabajo dejamos un legado de aportaciones técnicas y metodológicas relevantes para la Ingeniería en Tecnologías de la Información. Nuestra principal contribución es que formalizamos una metodología de \textit{bypass} ciberfísico no intrusivo para la modernización de máquinas \textit{legacy}. A diferencia de un \textit{retrofit} tradicional que requiere la modificación completa del tablero de control, nuestro enfoque nos permite instrumentar externamente el proceso, preservando la integridad del circuito original de 220V y la lógica del PLC. Con esta metodología minimizamos el riesgo de inutilizar equipos críticos cuya detención prolongada no es viable.
+
+En segundo lugar, hemos validado una arquitectura de integración vertical de bajo costo que desafía el paradigma de que los gemelos digitales requieren plataformas comerciales de alto valor. Utilizando microcontroladores ESP32 de amplia disponibilidad, protocolos ligeros como MQTT y plataformas de simulación de código abierto como Webots, logramos un sistema plenamente funcional descrito en detalle teórico y práctico. Constituimos este proyecto como un caso de estudio replicable y totalmente documentado para entornos académicos y de formación técnica, con el cual proporcionamos un manual para la transformación digital de laboratorios universitarios. En el ámbito de la interoperabilidad, hemos demostrado cómo un protocolo IoT moderno puede inyectar datos de un activo \textit{legacy} en un ecosistema digital, un paso fundamental para la Industria 4.0.
+
+\subsection{Identificación de Limitaciones y Restricciones del Prototipo Actual}
+
+Consideramos imperativo para el rigor científico reconocer las limitaciones que enmarcaron el alcance de nuestro proyecto. Nuestra restricción más significativa fue la imposibilidad de medir la Calidad dentro del indicador OEE. La ausencia de un sistema de pesaje dinámico (celdas de carga) o de un subsistema de visión artificial en la etapa de dosificación nos impidió cuantificar la precisión en gramos de cada funda. Por lo tanto, el OEE que reportamos (91.85\%) es una métrica compuesta únicamente por Disponibilidad y Rendimiento, lo cual consideramos que subestima potencialmente las pérdidas del proceso si existiesen variaciones no detectadas en la masa del producto. Enfrentamos esta realidad como consecuencia directa de la naturaleza \textit{legacy} de la máquina y de la falta de permisos que tuvimos para modificar su tolva de pesaje original.
+
+En segundo lugar, circunscribimos el dominio de validación a un entorno controlado de laboratorio. Si bien esto fue adecuado, reconocemos que las condiciones no replican completamente las perturbaciones ambientales de una planta agroindustrial real, como el polvo en suspensión, las fluctuaciones extremas de temperatura o las vibraciones constantes transmitidas por otras máquinas. Asimismo, el único escenario de fallo inyectado que probamos fue la desconexión del sistema neumático, un modo de fallo común pero no el único posible en el sistema electromecánico completo. Finalmente, en nuestra implementación no estuvimos exentos de desafíos en la gestión del cronograma. En la fase de integración entre la Máquina de Estados Finitos (FSM) y el entorno de simulación Webots, enfrentamos una curva de aprendizaje más pronunciada de lo que estimamos, lo cual reflejamos en una extensión justificada de 3 días en nuestro plan de trabajo original.
+
+\subsection{Reflexión Final Sobre la Transformación Digital de Activos Industriales}
+
+Al término de esta investigación, reflexionamos sobre el impacto de la transformación digital en el tejido industrial latinoamericano. Hemos constatado que la obsolescencia tecnológica no es un destino irreversible, sino un estado transitorio que logramos resolver mediante inteligencia ciberfísica. Con nuestro proyecto demostramos que la ecuación de modernización no se limita a la disyuntiva del reemplazo de equipos, sino que se enriquece con una tercera vía: la \enquote{digitalización envolvente}. Este enfoque que proponemos permite a las pequeñas y medianas empresas, que conforman la mayor parte del sector agroindustrial, acceder a las ventajas de la Industria 4.0 sin ejecutar inversiones prohibitivas. Comprobamos que la combinación estratégica de talento humano en formación de pregrado y herramientas tecnológicas de código abierto tiene el poder de catalizar un cambio profundo en la competitividad del sector productivo.
+
+\section{Recomendaciones}
+
+A la luz de los resultados que obtuvimos, las lecciones que aprendimos y la prospectiva tecnológica, presentamos las siguientes recomendaciones estructuradas para los diferentes actores involucrados, con el fin de maximizar el impacto y la sostenibilidad de nuestra solución.
+
+\subsection{Recomendaciones para el Laboratorio de Procesos de la Universidad Indoamérica}
+
+Instamos a los responsables del Laboratorio de Procesos a incorporar formalmente el Gemelo Digital que desarrollamos como un módulo didáctico transversal. Consideramos que esta herramienta no debe limitarse a una demostración, sino convertirse en un banco de pruebas para asignaturas de automatización industrial, sistemas ciberfísicos y protocolos de comunicación. Recomendamos diseñar guías de laboratorio específicas donde los estudiantes utilicen el SCADA de Node-RED para analizar tendencias de rendimiento y simular fallos, fortaleciendo así sus competencias en diagnóstico de fallos.
+
+Asimismo, sugerimos establecer un protocolo de mantenimiento predictivo básico aprovechando las métricas que recolectamos. Aunque el sistema actual no prescribe acciones automáticas, el personal del laboratorio puede utilizar nuestros datos de presión del sistema neumático monitoreado en tiempo real para anticipar ciclos de mantenimiento antes de que ocurra una caída de presión crítica. Para enriquecer el ecosistema de sensórica, recomendamos la adquisición de sensores adicionales de vibración y temperatura que puedan integrarse a los pines de expansión I2C que actualmente usamos, mejorando así la riqueza informativa del gemelo sin alterar la arquitectura base.
+
+\subsection{Recomendaciones para la Universidad Indoamérica y la Gestión Curricular}
+
+Desde la perspectiva institucional, recomendamos a la Universidad Indoamérica establecer un laboratorio especializado en Gemelos Digitales y Sistemas Ciberfísicos. La exitosa ejecución que logramos en este proyecto con un presupuesto tan austero establece un precedente para equipar un espacio dedicado con múltiples máquinas \textit{legacy} instrumentadas. Este laboratorio posicionaría a la universidad como un referente en la enseñanza de TIC aplicadas a la industria. Consideramos crucial fomentar proyectos de titulación que sigan esta línea de investigación aplicada, cerrando la brecha entre la teoría académica y las necesidades tangibles de la industria local.
+
+Recomendamos a las autoridades académicas gestionar alianzas estratégicas con el sector agroindustrial de la provincia. Esta transferencia tecnológica directa nos permitiría calibrar el prototipo en condiciones reales y, al mismo tiempo, ofrecer a los empresarios una ventana de oportunidad para la modernización de bajo riesgo. La inclusión de contenidos sobre protocolos IoT industriales (MQTT, OPC UA) y simulación 3D en la actualización curricular de la Ingeniería en Tecnologías de la Información es igualmente prioritaria para que garanticemos que los futuros ingenieros dominen estas competencias clave.
+
+\subsection{Recomendaciones Estratégicas para el Sector Agroindustrial}
+
+Para las empresas del sector agroindustrial, ofrecemos con este proyecto un modelo de adopción tecnológica de bajo riesgo. Nuestra recomendación principal es realizar un análisis de costo-beneficio que compare el \textit{bypass} ciberfísico que presentamos aquí con la compra de una máquina nueva equivalente. Nuestros resultados indican que, por menos de 250 dólares, logramos que una empresa transite de una operación operativamente \enquote{ciega} a un modelo con monitorización en tiempo real, lo cual impacta directamente en los indicadores de disponibilidad.
+
+Recomendamos a los gerentes de planta considerar la monitorización del OEE, incluso sin el factor de calidad automático, como un primer paso para implementar la Mejora Continua. La visibilidad que otorgamos con el tablero SCADA sobre los tiempos de ciclo y los micro-paros le permite al supervisor identificar cuellos de botella invisibles a simple vista. La gran ventaja de nuestro enfoque es que nos apoyamos en tecnología \textit{open-source}, lo cual elimina los costos de licenciamiento de software propietario, reduciendo dramáticamente las barreras de entrada para pequeñas y medianas empresas procesadoras.
+
+\subsection{Recomendaciones Técnicas para Iteraciones Futuras del Hardware y Software}
+
+Técnicamente, recomendamos que en la próxima iteración del prototipo se priorice la incorporación del factor de Calidad en el cálculo del OEE. Podemos lograr esto mediante la integración de una celda de carga y un módulo conversor analógico-digital de alta precisión, que añadiremos al bus I2C existente, para registrar el peso exacto de cada funda. Paralelamente, sugerimos el desarrollo de una aplicación móvil o una interfaz web responsive que actúe como cliente del broker MQTT, lo que nos permitirá el monitoreo remoto de la producción desde cualquier dispositivo.
+
+Para mejorar la resiliencia del sistema embebido, aconsejamos implementar la lógica de \textit{watchdog} en los ESP32 para reinicios automáticos en caso de bloqueo del firmware. Además, consideramos que debemos expandir nuestro modelo de la Máquina de Estados Finitos (FSM) actual, que contempla un escenario de falla neumática, para incluir estados correspondientes a fallas eléctricas, atascos de granos o desconexión del bus de comunicación. Finalmente, aunque el consumo que logramos es abordable, mediante una auditoría energética del sistema implementado podríamos optimizar los ciclos de sueño profundo de los microcontroladores, una ventaja crucial si decidiéramos desplegar el sistema en ubicaciones con suministro eléctrico inestable.
+
+\section{Trabajos Futuros}
+
+Con la culminación de nuestro proyecto no cerramos el ciclo de investigación, sino que abrimos un abanico de líneas de trabajo futuras que se alinean con la evolución natural de los gemelos digitales y la ingeniería de sistemas ciberfísicos.
+
+\subsection{Evolución hacia un Gemelo Digital Prescriptivo (Nivel 4)}
+
+La línea de investigación más directa que abrimos es la migración de nuestro actual gemelo de Nivel 3 (Predictivo) a uno de Nivel 4 (Prescriptivo). Esto implica que diseñemos e integremos algoritmos de inteligencia artificial que no solo anticipen el fallo, sino que recomienden autónomamente la acción correctiva. Proponemos explorar el uso de redes neuronales artificiales para modelar el desgaste de los pistones neumáticos basándonos en la data histórica de presión que recolectamos. Del mismo modo, podríamos optimizar en tiempo real la cadencia de los actuadores mediante la implementación de algoritmos genéticos para maximizar el OEE sujeto a restricciones de fatiga de materiales, logrando así transitar de la alerta a la decisión autónoma.
+
+\subsection{Nuevas Líneas de Investigación Aplicada en Ciberfísica}
+
+Recomendamos la derivación de este trabajo hacia la aplicación de nuestra metodología de \textit{bypass} en otras familias de máquinas \textit{legacy} presentes en los talleres de la universidad, como tornos paralelos, fresadoras convencionales o prensas hidráulicas, unificándolas bajo un mismo espacio de monitorización. Consideramos que la integración de tecnologías de Realidad Aumentada (AR) representa un salto cualitativo para el mantenimiento asistido; al superponer los datos de nuestro gemelo digital sobre la máquina real mediante un dispostivo, agilizaríamos las labores de reparación.
+
+Asimismo, proponemos como objeto de estudio la aplicación de tecnologías de registro distribuido (\textit{Blockchain}) para establecer una cadena de custodia digital de las variables de operación. Con esto permitiríamos garantizar la inmutabilidad de los registros de producción, un requisito cada vez más demandado en las certificaciones de calidad alimentaria para la exportación de granos. Finalmente, para escenarios donde la latencia de la red sea crítica, proponemos investigar la migración de nuestra lógica de control desde la nube hacia un modelo de \textit{Edge Computing}, procesando los datos directamente en los núcleos de los ESP32 para un control de lazo cerrado ultra-rápido.
+
+\begin{longtable}{|p{0.08\textwidth}|p{0.30\textwidth}|p{0.25\textwidth}|p{0.25\textwidth}|}
+\caption{Resumen de cumplimiento de objetivos específicos.}
+\label{tab:cumplimiento_objetivos} \\
+\hline
+\textbf{ID} & \textbf{Objetivo Específico} & \textbf{Evidencia de Cumplimiento} & \textbf{Estado} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{ID} & \textbf{Objetivo Específico} & \textbf{Evidencia de Cumplimiento} & \textbf{Estado} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+OE1 & Levantamiento y diagnóstico de la máquina \textit{legacy} & Mapeo completo de circuitos eléctricos y neumáticos; diseño del \textit{bypass} no intrusivo & $\checkmark$ Cumplido \\
+\hline
+OE2 & Diseño e implementación del gemelo digital & Integración ESP32-MQTT-Node-RED-Webots; latencia $< 100$ ms & $\checkmark$ Cumplido \\
+\hline
+OE3 & Evaluación mediante pruebas de validación & 5 pruebas con OEE promedio 91.85\%; MTTR 52 segundos & $\checkmark$ Cumplido \\
+\hline
+\end{longtable}
+
+\begin{longtable}{|p{0.35\textwidth}|p{0.55\textwidth}|}
+\caption{Resumen de limitaciones identificadas y recomendaciones asociadas.}
+\label{tab:limitaciones_recomendaciones} \\
+\hline
+\textbf{Limitación Identificada} & \textbf{Recomendación Asociada} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Limitación Identificada} & \textbf{Recomendación Asociada} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+OEE sin factor de Calidad (sin sistema de pesaje) & Incorporar celda de carga y módulo ADC en futura iteración \\
+\hline
+Pruebas en entorno controlado de laboratorio & Validar en planta agroindustrial operativa \\
+\hline
+Fallo inyectado limitado a escenario neumático & Expandir FSM para contemplar fallas eléctricas y de comunicación \\
+\hline
+Curva de aprendizaje en Webots (extensión 3 días) & Documentar guías de integración para futuros investigadores \\
+\hline
+\end{longtable}

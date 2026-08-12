@@ -1,0 +1,195 @@
+\chapter{Implementación, Pruebas y Resultados}
+\label{chap:implementacion}
+
+\section{Descripción de la Solución Implementada}
+
+La arquitectura final del sistema implementado en el Laboratorio de Procesos de la Universidad Indoamérica constituye la materialización de un Sistema Ciberfísico (CPS) de nivel 3, aplicado sobre una máquina dosificadora de granos de tipo heredado. La solución se orquestó bajo el principio de no intrusión, respetando la integridad de la máquina original mediante un \textit{bypass} ciberfísico paralelo. La columna vertebral de dicha arquitectura es una caja de control industrial externa (grado de protección IP54), que alberga la lógica de adquisición de datos, actuación y comunicación IoT \cite{kritzinger2018}.
+
+El núcleo de procesamiento se dividió en dos microcontroladores ESP32-WROOM de 38 pines, seleccionados por su capacidad Wi-Fi y Bluetooth integrada que facilita la conectividad bidireccional sin modificar el cableado de la planta original. Sobre esta base, se integró un sistema de sensórica compuesto por tres barreras infrarrojas para la detección de producto (fundas), un sensor ultrasónico para la verificación de tolva y un transductor de presión industrial con acondicionamiento de señal, encargado de monitorizar el circuito neumático que acciona los pistones de dosificación. Como capa de actuación, se dispuso de un módulo de relés de 8 canales para gobernar las electroválvulas y un servomotor para el dispensador auxiliar, replicando y controlando las órdenes que originalmente ejecutaba el PLC.
+
+La implementación del \textit{bypass} representó el desafío ingenieril más crítico. Dado que el controlador original (PLC) gestionaba las entradas de un contactor trifásico de 220V, fue necesario diseñar una etapa de aislamiento galvánico utilizando optoacopladores PC817. Esto permitió bifurcar las señales de control del relé sin que la corriente de retorno afectara las nuevas entradas digitales de los ESP32, garantizando una operación dual ininterrumpida: la máquina podía operar en modo \textit{legacy} (autónomo) o en modo \textit{gemelo digital}, conmutando la intervención mediante el SCADA \cite{monostori2016}. La comunicación entre el hardware físico, el gemelo digital 3D en Webots y el panel SCADA en Node-RED se unificó mediante el protocolo MQTT, utilizando Mosquitto como broker local, lo que aseguró una latencia de mensajería en el orden de los microsegundos.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/arquitectura_sistema.png}
+    \caption{Arquitectura general del sistema implementado: integración hardware-software-gemelo digital.}
+    \label{fig:arquitectura_sistema}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Capítulos/img/maquina_real.jpeg}
+        \caption{Máquina dosificadora de granos real (vista frontal).}
+        \label{fig:maquina_real}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Capítulos/img/gemelo_webots.jpeg}
+        \caption{Gemelo digital en Webots con restricciones cinemáticas equivalentes.}
+        \label{fig:gemelo_webots}
+    \end{minipage}
+\end{figure}
+
+
+\section{Proceso de Implementación}
+
+El desarrollo del proyecto se estructuró en siete fases iterativas, desde la construcción física del gabinete hasta la validación virtual de los KPI de manufactura. La \textbf{Fase 1} consistió en el diseño y cableado del panel de control IP54. Debido a la presencia de interferencias electromagnéticas (EMI) por la conmutación de la carga inductiva de 220V, se integraron condensadores de poliéster como filtros \textit{snubber}, lo que resultó fundamental para evitar reinicios espontáneos de los microcontroladores. La \textbf{Fase 2} abordó la programación del firmware en los ESP32; se implementaron filtros de promedio móvil exponencial (\textit{EMA}) para estabilizar la señal analógica del transductor de presión, fijando una frecuencia de muestreo de 100 ms que balancea la capacidad de respuesta con la estabilidad de la red.
+
+La \textbf{Fase 3} y \textbf{4} se enfocaron en el ecosistema digital. Se configuró el broker Mosquitto definiendo una estricta máscara de enrutamiento de tópicos para el \textit{Virtual Commissioning} (ej. \texttt{planta/dosificadora/presion}) con payloads en formato JSON. Simultáneamente, se desarrolló el dashboard SCADA en Node-RED, donde se desplegaron indicadores visuales de OEE y controles para la operación remota. La \textbf{Fase 5} y \textbf{6} materializaron el gemelo digital. El modelo cinemático de la máquina se diseñó en FreeCAD, respetando las proporciones y restricciones de movimiento, y se exportó a Webots \cite{fuller2020}. En este entorno, se programó una Máquina de Estados Finitos (FSM) en Python que replica exactamente la secuencia lógica del PLC, permitiendo la sincronización bidireccional con el hardware físico a través de MQTT. La \textbf{Fase 7} consistió en la integración total y las pruebas de validación con lotes de producto.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/panel_scada_node-red.jpeg}
+    \caption{Panel SCADA desarrollado en Node-RED con indicadores de OEE, disponibilidad, rendimiento y controles remotos.}
+    \label{fig:panel_scada}
+\end{figure}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Capítulos/img/diagrama_flujo_mqtt.jpeg}
+    \caption{Diagrama de flujo de comunicación MQTT entre ESP32, broker Mosquitto, Node-RED y Webots.}
+    \label{fig:flujo_mqtt}
+\end{figure}
+
+
+\section{Pruebas y Validación}
+
+Para la evaluación del gemelo digital de Nivel 3, se diseñó un protocolo de validación experimental con cinco corridas de producción, variando el tamaño del lote desde 60 hasta 200 fundas. El objetivo fue verificar la eficacia del sistema en términos de Disponibilidad, Rendimiento y Efectividad Global (OEE), así como su estabilidad comunicacional mediante el monitoreo de la latencia MQTT y su capacidad predictiva frente a anomalías. Se registró que la \textbf{Prueba 1}, con un lote de 200 fundas, requirió un tiempo operativo de 28.27 minutos, alcanzando un OEE del 92.33\% sin registrar interrupciones. Las pruebas 2, 3 y 4 confirmaron la consistencia del sistema, manteniendo el OEE entre el 91.30\% y el 92.04\%, con una disponibilidad perfecta del 100\%.
+
+La validación del comportamiento predictivo se llevó a cabo en la \textbf{Prueba 5}, donde se inyectó un fallo neumático simulado mediante la alteración de los valores del transductor de presión. Este evento provocó una caída en la disponibilidad del 7.08\%, pasando del 100\% al 92.92\%, y una reducción del OEE Global del 7.23\%, situándose en 84.62\%. La respuesta del sistema ante este estímulo permitió registrar un Tiempo Medio de Recuperación (MTTR) de aproximadamente 52 segundos, demostrando la capacidad del gemelo para detectar rápidamente la desviación y asistir en la corrección del régimen operativo, un contraste significativo con la operación reactiva tradicional \cite{tao2017}. La tabla \ref{tab:resultados_pruebas} presenta la matriz de resultados cuantitativos obtenidos durante las pruebas.
+
+{\footnotesize
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|c|c|c|c|c|c|c|}
+\caption{Resultados de las pruebas de validación del gemelo digital.}
+\label{tab:resultados_pruebas} \\
+\hline
+\textbf{Prueba} & \shortstack{\textbf{Lote} \\ \textbf{(fundas)}} & \shortstack{\textbf{Tiempo} \\ \textbf{(min)}} & \textbf{OEE (\%)} & \shortstack{\textbf{Disponibilidad} \\ \textbf{(\%)}} & \shortstack{\textbf{Rendimiento} \\ \textbf{(\%)}} & \shortstack{\textbf{Latencia} \\ \textbf{(ms)}} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{Prueba} & \shortstack{\textbf{Lote} \\ \textbf{(fundas)}} & \shortstack{\textbf{Tiempo} \\ \textbf{(min)}} & \textbf{OEE (\%)} & \shortstack{\textbf{Disponibilidad} \\ \textbf{(\%)}} & \shortstack{\textbf{Rendimiento} \\ \textbf{(\%)}} & \shortstack{\textbf{Latencia} \\ \textbf{(ms)}} \\
+\hline
+\endhead
+
+1 & 200 & 28.27 & 92.33 & 100.0 & 92.33 & 0.75 \\
+2 & 120 & 16.96 & 92.04 & 100.0 & 92.04 & 0.45 \\
+3 &  60 &  8.48 & 91.30 & 100.0 & 91.30 & 0.50 \\
+4 &  78 & 11.02 & 91.71 & 100.0 & 91.71 & 0.74 \\
+5 &  80 & 11.38 & 84.62 & 92.92 & 91.07 & 0.51 \\
+\hline
+\end{longtable}
+}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Capítulos/img/reporte_prueba1.png}
+        \caption{Reporte de la Prueba 1 (200 fundas, OEE 92.33\%).}
+        \label{fig:reporte1}
+    \end{minipage}\hfill
+    \begin{minipage}{0.48\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Capítulos/img/reporte_prueba5.png}
+        \caption{Reporte de la Prueba 5 (fallo inyectado, OEE 84.62\%).}
+        \label{fig:reporte5}
+    \end{minipage}
+\end{figure}
+
+\section{Análisis de Resultados}
+
+Al procesar las métricas de las cuatro pruebas sin fallos (Pruebas 1-4), se observa un comportamiento estadístico altamente estable del sistema. El OEE Global promedio se situó en $\bar{X} = 91.85\%$ con una desviación estándar de $\sigma = \pm 0.46\%$. Esta dispersión mínima indica que la máquina, una vez digitalizada y bajo la supervisión del CPS, alcanza un punto de operación óptimo constante, independientemente del tamaño del lote. La disponibilidad fue total ($100\%$), descartando la existencia de microcortes o pérdidas de comunicación significativas durante el muestreo regular. Según los parámetros de clase mundial en manufactura, un OEE superior al 85\% posiciona al sistema en un estado de alta eficiencia \cite{muchiri2008}.
+
+\begin{equation}
+    \bar{X} = 91.85\%.
+    \label{eq:promedio_oee}
+    \addeqtolist{OEE Global Promedio}
+\end{equation}
+
+\begin{equation}
+    \sigma = \pm 0.46\%.
+    \label{eq:desviacion_oee}
+    \addeqtolist{Desviación Estándar del OEE}
+\end{equation}
+
+La variación en la \textbf{Prueba 5} es de particular interés para el ámbito de la Ingeniería en Tecnologías de la Información aplicada a la industria. La inyección de un fallo evidenció la interacción en tiempo real del gemelo digital. La caída del OEE a 84.62\% y de la disponibilidad a 92.92\% permitió validar dos aspectos técnicos mayores: primero, la correcta propagación de la señal de anomalía desde la capa física (sensor de presión) a través del broker MQTT hasta el entorno de simulación (Webots); y segundo, la ejecución de un protocolo de recuperación semiautomático con un MTTR de 52 segundos. En términos de comunicación industrial, los requisitos no funcionales se cumplieron con holgura. La RNF1 exigía una latencia MQTT inferior a 100 ms, mientras que los valores registrados oscilaron entre 0.45 ms y 0.75 ms, representando un margen de mejora sobre el requisito del 99.25\%, un resultado clave para aplicaciones de control en tiempo real blando (\textit{soft real-time}) \cite{alfuqaha2015}.
+
+\begin{equation}
+    \text{Margen de mejora} = 99.25\%.
+    \label{eq:margen_mejora}
+    \addeqtolist{Margen de mejora sobre requisito de latencia}
+\end{equation}
+
+\section{Comparativa con la Situación Inicial}
+
+La implementación de la arquitectura de gemelo digital transformó sustancialmente la operatividad de la máquina dosificadora. Previamente, el sistema \textit{legacy} operaba como una ``caja negra'', carecía de conectividad, no generaba registros digitales de producción y, en ausencia de un sistema de monitoreo, las métricas como el OEE o el MTTR eran conceptualmente imposibles de calcular. Cualquier mantenimiento se ejecutaba de manera reactiva, solventando los fallos solo cuando la línea de producción se detenía sin diagnóstico previo.
+
+La tabla \ref{tab:comparativa_inicial} resume las diferencias cuantitativas y cualitativas entre ambos escenarios.
+
+\begin{table}[htbp]
+\centering
+\caption{Comparativa antes/después de la implementación.}
+\label{tab:comparativa_inicial}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Antes} & \textbf{Después} \\
+\hline
+Monitorización en tiempo real & No & Sí (0.61 ms de latencia) \\
+Mantenimiento predictivo & No & Sí (Nivel 3) \\
+OEE medible & No & Sí (91.85\% promedio) \\
+Detección de fallos & No & Sí (Prueba 5) \\
+MTTR cuantificado & No & 52 segundos \\
+Trazabilidad de producción & No & Sí (archivos CSV) \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Cumplimiento de Objetivos}
+
+La validación empírica confirma el cumplimiento estricto del Objetivo General planteado para la tesis: \textit{``Diseñar e implementar un Gemelo Digital de Nivel 3 para una máquina industrial dosificadora de granos, con el fin de habilitar la monitorización predictiva y la interacción bidireccional.''} La arquitectura desplegada permite la comunicación interactiva entre el usuario (SCADA), el objeto simulado (Webots) y el equipo físico (Bypass), elevando el nivel de madurez tecnológica del laboratorio.
+
+Respecto a los objetivos específicos:
+\begin{itemize}
+    \item \textbf{OE1 (Levantamiento y Diagnóstico):} Cumplido. Se realizó la caracterización completa del sistema \textit{legacy}, mapeando su funcionamiento eléctrico y neumático, siendo este diagnóstico el que permitió diseñar el interfaz de \textit{bypass} no invasivo con optoacopladores.
+    \item \textbf{OE2 (Diseño e Implementación):} Cumplido. Se implementó exitosamente la lógica de control FSM en Python, la comunicación vía broker Mosquitto y la integración de paneles SCADA con Node-RED, unificando el gemelo digital con la máquina real.
+    \item \textbf{OE3 (Evaluación):} Cumplido. Mediante las cinco pruebas de validación, con lotes de 60 a 200 fundas, se generaron métricas consistentes con una media de OEE del 91.85\%, demostrando cuantitativamente la eficacia del sistema en condiciones normales y de fallo.
+\end{itemize}
+
+\section{Análisis de Desempeño de Red MQTT}
+
+Uno de los pilares técnicos del sistema es la robustez de la red de telemetría. Durante las pruebas de validación, la latencia media por paquete MQTT se mantuvo en 0.61 ms, un valor que refleja una infraestructura de red local (LAN) saturada mínimamente y una óptima configuración del \textit{payload} JSON en los ESP32. La latencia mínima se registró en la prueba 2 (0.45 ms) y la máxima en la prueba 1 (0.75 ms). Este comportamiento no solo cumple con el requisito RNF1, sino que también habilita la futura escalabilidad del sistema hacia aplicaciones de control de lazo cerrado directo desde el gemelo digital.
+
+Se trabajó con un nivel de Calidad de Servicio (QoS) 1, garantizando la entrega de mensajes críticos sin duplicados perceptibles. La estabilidad fue absoluta: no se registraron pérdidas de paquetes ni reconexiones abruptas en ninguno de los registros obtenidos. A esto se suma el cumplimiento del RNF2 (Inmunidad a EMI), verificado porque los microcontroladores no experimentaron reinicios ni colapsos de pila TCP/IP durante los 76.11 minutos acumulados de operación bajo carga inductiva de 220V, resultado de los filtros pasivos implementados en el diseño electrónico de la caja de control \cite{caiza2020}.
+
+\section{Discusión de Resultados}
+
+Los resultados obtenidos posicionan al prototipo implementado por encima del umbral estándar de eficacia en la industria de manufactura de alimentos y envasado. Si bien un OEE del 100\% es teóricamente inalcanzable, obtener un índice global del 91.85\% valida la hipótesis de que la implementación de un gemelo digital optimiza el ciclo productivo al eliminar tiempos muertos no cuantificados previamente. La consistencia en la desviación estándar ($\sigma = 0.46\%$) sugiere que el modelo cinemático de la FSM en Webots representa fielmente las restricciones físicas de la máquina, factor que es crucial para la fiabilidad en la toma de decisiones automatizadas \cite{qi2018}.
+
+\begin{equation}
+    \sigma = 0.46\%.
+    \label{eq:sigma_discusion}
+    \addeqtolist{Desviación Estándar en la Discusión de Resultados}
+\end{equation}
+
+La pronta identificación del fallo neumático en la Prueba 5 transforma la naturaleza del mantenimiento de reactivo a predictivo, eliminando la dependencia de inspecciones humanas programadas.
+
+No obstante, es necesario reconocer las limitaciones encontradas. El indicador OEE calculado excluye el factor de ``Calidad'', ya que no se instaló un sistema de pesaje o rechazo de producto que permita contabilizar unidades defectuosas, limitando el análisis al tiempo productivo y la disponibilidad operacional. Asimismo, las pruebas se realizaron en un entorno controlado de laboratorio académico, y aunque el fallo inyectado demostró la capacidad de respuesta, se limitó a un escenario de falla neumática. A pesar de estas restricciones, la arquitectura abierta de comunicación MQTT y el modelado en FreeCAD/Webots convierten este proyecto en una plataforma extensible para la investigación en manufactura inteligente aplicada a maquinaria obsoleta.
+
+\section{Cronograma y Presupuesto Ejecutado}
+
+El cronograma real del proyecto se ajustó en un 85\% a la planificación inicial. Las fases de construcción mecánica de la caja IP54 y el \textit{bypass} electrónico no presentaron desviaciones. La Fase 5 y 6 (Modelado 3D y sincronización en Webots) demandó un esfuerzo adicional de validación de colisiones físicas, extendiéndose tres días debido a la curva de aprendizaje del motor de simulación.
+
+Respecto al presupuesto, se respetó el margen financiero establecido para el prototipo. El costo ejecutado total fue de 243.20 dólares americanos, sin registrar desviaciones económicas significativas respecto a lo planificado. El gasto principal se concentró en los componentes de la caja de control (módulos ESP32, sensores industriales y fuentes de alimentación), mientras que las licencias de software se mantuvieron en cero al utilizarse exclusivamente herramientas de código abierto (Mosquitto, Node-RED, FreeCAD, Webots), reforzando la viabilidad de bajo costo de la solución para entornos académicos y PyMEs. El detalle del desglose financiero confirmó que la barrera de entrada para la virtualización de procesos no radica necesariamente en el costo del software, sino en la ingeniería de integración.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Capítulos/img/cronograma_gantt.png}
+    \caption{Diagrama de Gantt del proyecto (12 semanas).}
+    \label{fig:cronograma_gantt}
+\end{figure}
