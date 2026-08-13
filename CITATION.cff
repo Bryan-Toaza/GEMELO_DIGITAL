@@ -12,8 +12,8 @@ authors:
     family-names: Cárdenas Burbano
     email: kianycardenas@gmail.com
     orcid: 'https://orcid.org/0009-0003-2270-3145'
-  - orcid: 'https://orcid.org/0009-0000-9039-7950'
-    given-names: Bryan David
+  - given-names: Bryan David
     family-names: Toaza Yandun
     email: toaza.bryan.uelch@gmail.com
+    orcid: 'https://orcid.org/0009-0000-9039-7950'
 repository-code: 'https://github.com/Bryan-Toaza/GEMELO_DIGITAL'
