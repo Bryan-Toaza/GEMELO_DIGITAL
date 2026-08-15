@@ -1,0 +1,55 @@
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reporte de Lote - OEE Gemelo Digital</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 40px; }
+            .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+            h1 { text-align: center; color: #111827; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px; }
+            .metadata { display: flex; justify-content: space-between; background: #e5e7eb; padding: 15px; border-radius: 8px; font-weight: bold; margin-bottom: 20px; }
+            .btn-print { display: block; margin: 20px auto; padding: 10px 20px; background-color: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background 0.3s; }
+            .btn-print:hover { background-color: #1d4ed8; }
+            .chart-container { position: relative; height: 50vh; width: 100%; margin-top: 30px; }
+            @media print { .btn-print { display: none; } body { background: white; } .container { box-shadow: none; } }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>📊 Reporte de Lote (OEE) - Gemelo Digital</h1>
+            <div class="metadata">
+                <span>ID Lote: 20260723_160303</span>
+                <span>Inicio: 2026-07-23 16:03:03</span>
+                <span>Fin: 2026-07-23 16:05:29</span>
+            </div>
+            <button class="btn-print" onclick="window.print()">🖨️ Guardar PDF / Imprimir</button>
+            <div class="chart-container">
+                <canvas id="oeeChart"></canvas>
+            </div>
+        </div>
+        <script>
+            const ctx = document.getElementById('oeeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["00:02","00:04","00:06","00:08","00:10","00:12","00:14","00:16","00:19","00:21","00:23","00:25","00:27","00:29","00:31","00:33","00:35","00:37","00:39","00:41","00:43","00:45","00:47","00:49","00:51","00:53","00:55","00:57","00:59","01:02","01:04","01:06","01:08","01:10","01:12","01:14","01:16","01:18","01:20","01:22","01:24","01:26","01:28","01:30","01:32","01:34","01:36","01:38","01:40","01:43","01:45","01:47","01:49","01:51","01:53","01:55","01:57","01:59","02:01","02:03","02:05","02:07","02:09","02:11","02:13","02:15","02:17","02:19","02:21","02:23"],
+                    datasets: [
+                        { label: 'OEE Global (%)', data: [0.0,0.0,0.0,89.32,72.46,60.95,52.6,92.51,82.56,74.54,67.95,62.42,86.59,80.53,75.27,70.65,88.75,83.9,79.55,75.64,90.1,86.06,82.37,78.98,91.03,87.57,84.36,81.38,91.7,88.67,85.84,83.18,92.21,89.52,86.99,84.59,92.61,90.19,87.9,85.72,83.64,90.74,88.64,86.64,84.73,91.19,89.26,87.41,85.64,91.57,89.78,88.06,86.41,91.89,90.23,88.62,87.08,92.17,90.61,89.11,87.66,92.41,90.95,89.54,88.16,92.62,91.25,89.91,88.61,87.35], borderColor: '#10b981', backgroundColor: '#10b981', tension: 0.3, borderWidth: 3 },
+                        { label: 'Disponibilidad (%)', data: [100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0], borderColor: '#3b82f6', tension: 0.3, borderDash: [5, 5] },
+                        { label: 'Rendimiento (%)', data: [0.0,0.0,0.0,89.32,72.46,60.95,52.6,92.51,82.56,74.54,67.95,62.42,86.59,80.53,75.27,70.65,88.75,83.9,79.55,75.64,90.1,86.06,82.37,78.98,91.03,87.57,84.36,81.38,91.7,88.67,85.84,83.18,92.21,89.52,86.99,84.59,92.61,90.19,87.9,85.72,83.64,90.74,88.64,86.64,84.73,91.19,89.26,87.41,85.64,91.57,89.78,88.06,86.41,91.89,90.23,88.62,87.08,92.17,90.61,89.11,87.66,92.41,90.95,89.54,88.16,92.62,91.25,89.91,88.61,87.35], borderColor: '#ec4899', tension: 0.3, borderDash: [5, 5] }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { 
+                        y: { beginAtZero: true, max: 105 },
+                        x: { title: { display: true, text: 'Tiempo de Simulación (Min:Seg)' } }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    

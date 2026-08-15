@@ -1,0 +1,189 @@
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Reporte y Métricas del Gemelo Digital</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f3f4f6; color: #1f2937; margin: 0; padding: 40px; }
+            .container { max-width: 1000px; margin: auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+            
+            /* Encabezado */
+            .header-reporte { text-align: center; margin-bottom: 40px; }
+            .header-reporte h1 { margin: 0; font-size: 28px; color: #111827; }
+            .header-reporte p { margin: 5px 0 0 0; color: #6b7280; font-size: 16px; font-weight: 500; }
+            
+            /* Estructura Exigida (Separadores Negros) */
+            h2.seccion-titulo {
+                color: #000;
+                font-size: 20px;
+                border-bottom: 2px solid #000;
+                padding-bottom: 8px;
+                margin-top: 35px;
+                margin-bottom: 20px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            /* Cuadricula de Datos */
+            .grid-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            .kpi-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; text-align: center; }
+            .kpi-card h4 { margin: 0 0 10px 0; color: #64748b; font-size: 13px; text-transform: uppercase; }
+            .kpi-card .valor { font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1; }
+            .kpi-card .sub-valor { font-size: 14px; color: #475569; margin-top: 8px; display: block; }
+
+            /* Gráfica */
+            .chart-container { position: relative; height: 50vh; width: 100%; margin-top: 10px; }
+            
+            /* Observaciones sin fondo verde */
+            .caja-observaciones {
+                background-color: transparent;
+                border: 1px dashed #000;
+                padding: 20px;
+                min-height: 100px;
+                border-radius: 4px;
+            }
+            .caja-observaciones p { margin: 0; color: #64748b; font-style: italic; }
+
+            /* Botón inferior */
+            .btn-imprimir { display: block; margin: 40px auto 0 auto; padding: 12px 25px; background-color: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.3s; }
+            .btn-imprimir:hover { background-color: #1d4ed8; }
+            
+            @media print { 
+                .btn-imprimir { display: none; } 
+                body { background: white; padding: 0; } 
+                .container { box-shadow: none; max-width: 100%; padding: 0; } 
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header-reporte">
+                <h1>Reporte y Métricas del Gemelo Digital</h1>
+                <p>Análisis Gerencial de Lote de Producción</p>
+            </div>
+            
+            <h2 class="seccion-titulo">1. Información de la Sesión</h2>
+            <div class="grid-kpis" style="grid-template-columns: 1fr 1fr;">
+                <div class="kpi-card">
+                    <h4>Identificador de Lote</h4>
+                    <div class="valor" style="font-size: 18px; margin-top:10px;">20260723_180717</div>
+                </div>
+                <div class="kpi-card">
+                    <h4>Período de Ejecución</h4>
+                    <span class="sub-valor" style="margin:0;"><strong>Inicio:</strong> 2026-07-23 18:07:17</span>
+                    <span class="sub-valor" style="margin:5px 0 0 0;"><strong>Fin:</strong> 2026-07-23 18:08:01</span>
+                </div>
+            </div>
+
+            <h2 class="seccion-titulo">2. Tiempos y Operación</h2>
+            <div class="grid-kpis">
+                <div class="kpi-card">
+                    <h4>Lote Total (Fundas)</h4>
+                    <div class="valor">5</div>
+                </div>
+                <div class="kpi-card">
+                    <h4>Tiempo Operativo</h4>
+                    <div class="valor">0.71 <small style="font-size: 14px; font-weight:600;">Minutos</small></div>
+                </div>
+                <div class="kpi-card">
+                    <h4>Interrupciones / Paradas</h4>
+                    <div class="valor">0</div>
+                </div>
+            </div>
+
+            <h2 class="seccion-titulo">3. Métricas de Producción (OEE Final)</h2>
+            <div class="grid-kpis">
+                <div class="kpi-card" style="border-bottom: 4px solid #10b981;">
+                    <h4>OEE Global</h4>
+                    <div class="valor">75.17%</div>
+                </div>
+                <div class="kpi-card" style="border-bottom: 4px solid #3b82f6;">
+                    <h4>Disponibilidad</h4>
+                    <div class="valor">100.0%</div>
+                </div>
+                <div class="kpi-card" style="border-bottom: 4px solid #ec4899;">
+                    <h4>Rendimiento</h4>
+                    <div class="valor">75.17%</div>
+                </div>
+            </div>
+
+            <h2 class="seccion-titulo">4. Desempeño de Red (MQTT)</h2>
+            <div class="grid-kpis" style="grid-template-columns: 1fr;">
+                <div class="kpi-card" style="display:flex; justify-content: space-between; align-items:center;">
+                    <h4 style="margin:0;">Latencia Media Registrada:</h4>
+                    <div class="valor" style="color: #64748b;">0.48 ms</div>
+                </div>
+            </div>
+
+            <h2 class="seccion-titulo">5. Análisis Gráfico de Tendencias</h2>
+            <div class="chart-container">
+                <canvas id="oeeChart"></canvas>
+            </div>
+
+            <h2 class="seccion-titulo">6. Conclusiones y Observaciones</h2>
+            <div class="caja-observaciones">
+                <p>Espacio reservado para análisis final del supervisor de planta y firmas de conformidad...</p>
+            </div>
+
+            <button class="btn-imprimir" onclick="window.print()">🖨️ Guardar PDF / Imprimir</button>
+        </div>
+        
+        <script>
+            const ctx = document.getElementById('oeeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["00:02","00:04","00:07","00:09","00:11","00:13","00:15","00:17","00:19","00:21","00:23","00:25","00:27","00:29","00:31","00:33","00:35","00:37","00:39","00:41"],
+                    datasets: [
+                        { 
+                            label: 'OEE Global (%)', 
+                            data: [0.0,0.0,0.0,86.79,70.79,59.76,51.71,91.14,81.47,73.65,67.2,92.69,85.78,79.83,74.66,70.11,88.12,83.33,79.04,75.17], 
+                            borderColor: '#10b981', 
+                            tension: 0.4, 
+                            borderWidth: 3,
+                            pointRadius: 0, 
+                            pointHoverRadius: 6 
+                        },
+                        { 
+                            label: 'Disponibilidad (%)', 
+                            data: [100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0,100.0], 
+                            borderColor: '#3b82f6', 
+                            tension: 0.4, 
+                            borderDash: [5, 5], 
+                            borderWidth: 2,
+                            pointRadius: 0, 
+                            pointHoverRadius: 6 
+                        },
+                        { 
+                            label: 'Rendimiento (%)', 
+                            data: [0.0,0.0,0.0,86.79,70.79,59.76,51.71,91.14,81.47,73.65,67.2,92.69,85.78,79.83,74.66,70.11,88.12,83.33,79.04,75.17], 
+                            borderColor: '#ec4899', 
+                            tension: 0.4, 
+                            borderDash: [5, 5], 
+                            borderWidth: 2,
+                            pointRadius: 0, 
+                            pointHoverRadius: 6 
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { position: 'top', labels: { usePointStyle: true, padding: 20 } }
+                    },
+                    scales: { 
+                        y: { beginAtZero: true, max: 105 },
+                        x: { 
+                            title: { display: true, text: 'Tiempo de Simulación (Min:Seg)' },
+                            ticks: { maxTicksLimit: 12, maxRotation: 45, minRotation: 45 } 
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
